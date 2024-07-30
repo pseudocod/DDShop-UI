@@ -2,12 +2,10 @@ import React from 'react';
 import {Box} from '@mui/material';
 import Typography from "@mui/material/Typography";
 
-
 const HeroSection = () => {
     return (
         <Box sx={{
-            wordWrap: 'break-word',
-            paddingRight: '80px',
+            marginRight: '80px',   // Space for the fixed header
             paddingTop: '30px',
             paddingBottom: '70px',
             paddingLeft: '50px',
@@ -15,7 +13,7 @@ const HeroSection = () => {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            height: '150vh'
+            height: '130vh'
         }}>
             <Typography variant='h1' sx={{
                 fontWeight: 700,
@@ -23,11 +21,7 @@ const HeroSection = () => {
                 fontSize: '30px',
                 marginBottom: '100px',
                 cursor: 'pointer',
-                // display: 'flex',
-                // alignItems: 'center'
             }}>
-                {/*<img src="/resurseProiect/logo-icon.svg" alt="Coffee Icon"*/}
-                {/*     style={{height: '40px', width: 'auto', marginRight: '16px', color: '#F5F4F2'}}/>*/}
                 ORICÂND
             </Typography>
 

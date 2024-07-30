@@ -12,7 +12,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import {useTheme} from '@mui/material/styles';
-import {ListItemButton} from "@mui/material";
+import {ListItemButton} from '@mui/material';
 
 export default function Header() {
     const [open, setOpen] = React.useState(false);
@@ -27,70 +27,65 @@ export default function Header() {
     };
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
-            <AppBar
-                sx={{
-                    width: '80px',
-                    transition: theme.transitions.create('width', {
-                        easing: theme.transitions.easing.sharp,
-                        duration: theme.transitions.duration.standard,
-                    }),
-                    backgroundColor: '#FFFFFF',
-                    color: '#151515',
-                    boxShadow: 'none',
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    justifyContent: 'center',
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                    height: '100vh',
-                }}
-            >
-                <Toolbar sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100vh',
-                    padding: '8px 0',
-                }}>
+        <AppBar
+            position="fixed"
+            sx={{
+                width: '80px',
+                backgroundColor: '#FFFFFF',
+                color: '#151515',
+                boxShadow: 'none',
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                height: '100vh',
+                zIndex: theme.zIndex.drawer + 1,
+            }}
+        >
+            <Toolbar sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100vh',
+                padding: '8px 0',
+            }}>
+                <IconButton
+                    size="large"
+                    color="inherit"
+                    aria-label="menu icon for opening drawer"
+                    sx={{mb: 2}}
+                    onClick={handleDrawerToggle}
+                >
+                    <MenuIcon/>
+                </IconButton>
+                <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
+                    Free Shipping
+                </Typography>
+                <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
+                    London orders 40£+ (by bike)
+                </Typography>
+                <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
+                    Wales orders 50£+ | <br/>
+                    Scotland orders 60£+
+                </Typography>
+                <Box sx={{display: 'flex', flexDirection: 'column'}}>
                     <IconButton
                         size="large"
+                        aria-label="shopping cart of user"
                         color="inherit"
-                        aria-label="menu icon for opening drawer"
-                        sx={{mb: 2}}
-                        onClick={handleDrawerToggle}
                     >
-                        <MenuIcon/>
+                        <LocalMallOutlinedIcon/>
                     </IconButton>
-                    <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
-                        Free Shipping
-                    </Typography>
-                    <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
-                        London orders 40£+ (by bike)
-                    </Typography>
-                    <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
-                        Wales orders 50£+ | <br/>
-                        Scotland orders 60£+
-                    </Typography>
-                    <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                        <IconButton
-                            size="large"
-                            aria-label="shopping cart of user"
-                            color="inherit"
-                        >
-                            <LocalMallOutlinedIcon/>
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            color="inherit"
-                            sx={{mb: 2}}
-                        >
-                            <AccountCircleOutlinedIcon/>
-                        </IconButton>
-                    </Box>
-                </Toolbar>
-            </AppBar>
+                    <IconButton
+                        size="large"
+                        aria-label="account of current user"
+                        color="inherit"
+                        sx={{mb: 2}}
+                    >
+                        <AccountCircleOutlinedIcon/>
+                    </IconButton>
+                </Box>
+            </Toolbar>
 
             <Drawer
                 variant="temporary"
@@ -98,13 +93,13 @@ export default function Header() {
                 open={open}
                 onClose={handleClose}
                 sx={{
-                    width: '550px',
-                    flexShrink: 0,
                     '& .MuiDrawer-paper': {
                         width: '550px',
                         boxSizing: 'border-box',
                         display: 'flex',
                         flexDirection: 'column',
+                        position: 'fixed',
+                        zIndex: theme.zIndex.drawer + 1, // Ensure it overlays content
                     },
                     '& .MuiBackdrop-root': {
                         backgroundColor: 'rgba(0, 0, 0, 0.03)',
@@ -149,6 +144,6 @@ export default function Header() {
                     </List>
                 </Box>
             </Drawer>
-        </Box>
+        </AppBar>
     );
 }
