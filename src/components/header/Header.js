@@ -13,6 +13,7 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import {useTheme} from '@mui/material/styles';
 import {ListItemButton} from '@mui/material';
+import {Link} from "react-router-dom";
 
 export default function Header() {
     const [open, setOpen] = React.useState(false);
@@ -30,7 +31,7 @@ export default function Header() {
         <AppBar
             position="fixed"
             sx={{
-                width: '80px',
+                width: '90px',
                 backgroundColor: '#FFFFFF',
                 color: '#151515',
                 boxShadow: 'none',
@@ -39,6 +40,7 @@ export default function Header() {
                 justifyContent: 'center',
                 height: '100vh',
                 zIndex: theme.zIndex.drawer + 1,
+                overflow: 'hidden',
             }}
         >
             <Toolbar sx={{
@@ -76,14 +78,16 @@ export default function Header() {
                     >
                         <LocalMallOutlinedIcon/>
                     </IconButton>
-                    <IconButton
-                        size="large"
-                        aria-label="account of current user"
-                        color="inherit"
-                        sx={{mb: 2}}
-                    >
-                        <AccountCircleOutlinedIcon/>
-                    </IconButton>
+                    <Link to="/login">
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            color="inherit"
+                            sx={{mb: 2}}
+                        >
+                            <AccountCircleOutlinedIcon/>
+                        </IconButton>
+                    </Link>
                 </Box>
             </Toolbar>
 
