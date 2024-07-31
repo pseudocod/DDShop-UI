@@ -17,7 +17,7 @@ const createRouter = (user) => {
             element: <RootLayout/>,
             children: [
                 {path: '/', element: <HomePage/>},
-                {path: '/login', element: user ? <Navigate to="/account"/> : <Login/>},
+                {path: '/login', element: <Login/>},
                 {path: '/register', element: user ? <Navigate to="/account"/> : <Register/>},
                 {path: '/account', element: user ? <Account/> : <Navigate to="/login"/>},
                 {path: '/edit-user', element: user ? <UserEdit/> : <Navigate to="/login"/>},

@@ -14,10 +14,13 @@ import Divider from '@mui/material/Divider';
 import {useTheme} from '@mui/material/styles';
 import {ListItemButton} from '@mui/material';
 import {Link} from "react-router-dom";
+import {useContext} from "react";
+import {UserContext} from "../../context/UserContext";
 
 export default function Header() {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
+    const {user} = useContext(UserContext);
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -78,7 +81,7 @@ export default function Header() {
                     >
                         <LocalMallOutlinedIcon/>
                     </IconButton>
-                    <Link to="/login">
+                    <Link to={user ? "/account" : "/login"}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
