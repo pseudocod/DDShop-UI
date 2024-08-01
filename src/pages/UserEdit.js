@@ -6,14 +6,14 @@ import {
     Checkbox,
     createTheme,
     FormControlLabel,
-    Modal,
     TextField,
     ThemeProvider
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {theme} from "../theme/theme";
 import AddressForm from "../../src/components/Address/AddressForm";
+import axios from "axios";
 
 export const editFormTheme = createTheme({
     ...theme,
@@ -46,9 +46,17 @@ export const editFormTheme = createTheme({
 
 export default function UserEdit() {
     const {user, setUser} = useContext(UserContext);
+    const [editedUser, setEditedUser] = useState({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber || '',
+    });
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [openBillingModal, setOpenBillingModal] = useState(false);
     const [useDeliveryAddress, setUseDeliveryAddress] = useState(false);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const [deliveryAddress, setDeliveryAddress] = useState({
         streetLine: '',
@@ -66,18 +74,46 @@ export default function UserEdit() {
         country: ''
     });
 
-    const handleDeliveryAddressChange = (event) => {
-        const {name, value} = event.target;
-        setDeliveryAddress({...deliveryAddress, [name]: value});
-        console.log(deliveryAddress);
+    const handleDeliveryAddressChange = (newAddress) => {
+        setDeliveryAddress(newAddress)
     };
 
-    const handleBillingAddressChange = (event) => {
+    const handleBillingAddressChange = (newAddress) => {
+        setBillingAddress(newAddress);
+    };
+
+    const handleUserChange = (event) => {
         const {name, value} = event.target;
-        setBillingAddress({...billingAddress, [name]: value});
+        setEditedUser({...editedUser, [name]: value});
+        console.log(editedUser);
         console.log(deliveryAddress);
         console.log(billingAddress);
-    };
+        console.log(useDeliveryAddress)
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const userData = {
+            firstName: editedUser.firstName,
+            lastName: editedUser.lastName,
+            phoneNumber: editedUser.phoneNumber,
+            defaultDeliveryAddress: deliveryAddress,
+            defaultBillingAddress: useDeliveryAddress ? deliveryAddress : billingAddress
+        }
+        try {
+            const response = await axios.put('http://localhost:8080/user/update/' + user.id, userData)
+            console.log(response.data);
+            setUser(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
+            setError(null);
+            navigate('/account');
+        } catch (error) {
+            console.error(error);
+            setError('Edit failed. Please try again.')
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -90,7 +126,6 @@ export default function UserEdit() {
     return (
         <>
             <ThemeProvider theme={editFormTheme}>
-
                 <Link to="/">
                     <Typography variant='h1' sx={{
                         fontWeight: 700,
@@ -98,13 +133,12 @@ export default function UserEdit() {
                         fontSize: '30px',
                         marginBottom: '50px',
                         cursor: 'pointer',
-                        mt: '30px',
-                        ml: '50px'
+                        ml: '50px',
+                        mt: '30px'
                     }}>
                         ORICÂND
                     </Typography>
                 </Link>
-
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -132,25 +166,28 @@ export default function UserEdit() {
                 </Box>
 
                 <Box sx={{padding: "20px", paddingRight: '100px'}}>
+                    <Box sx={{display: 'flex', gap: 2}}></Box>
                     <TextField margin="normal"
                                required
                                id="firstName"
                                label="First name"
                                name="firstName"
                                autoComplete="name"
+                               value={editedUser.firstName}
                                sx={{
                                    color: '#151515',
                                    backgroundColor: '#F5F4F2',
                                    borderRadius: '10px',
                                    width: '50%'
                                }}
+                               onChange={handleUserChange}
                     />
                     <TextField margin="normal"
-
                                required
                                id="lastName"
                                label="Last name"
                                name="lastName"
+                               value={editedUser.lastName}
                                autoComplete="family-name"
                                sx={{
                                    color: '#151515',
@@ -158,7 +195,25 @@ export default function UserEdit() {
                                    borderRadius: '10px',
                                    width: '50%'
                                }}
+                               onChange={handleUserChange}
                     />
+                    <Box sx={{display: 'block'}}>
+                        <TextField margin="normal"
+                                   required
+                                   id="phoneNumber"
+                                   label="Phone number"
+                                   name="phoneNumber"
+                                   value={editedUser.phoneNumber}
+                                   autoComplete="tel"
+                                   sx={{
+                                       color: '#151515',
+                                       backgroundColor: '#F5F4F2',
+                                       borderRadius: '10px',
+                                       width: '50%'
+                                   }}
+                                   onChange={handleUserChange}
+                        />
+                    </Box>
                     <Button
                         onClick={handleOpen}
                         variant="contained"
@@ -181,7 +236,7 @@ export default function UserEdit() {
                     </Button>
 
                     <AddressForm open={open} handleModalClose={handleClose}
-                                 handleAddressChange={handleDeliveryAddressChange}
+                                 handleAddressSave={handleDeliveryAddressChange}
                                  formType="delivery"
                     />
 
@@ -216,9 +271,36 @@ export default function UserEdit() {
                     )}
 
                     <AddressForm open={openBillingModal} handleModalClose={handleBillingModalClose}
-                                 handleAddressChange={handleBillingAddressChange}
+                                 handleAddressSave={handleBillingAddressChange}
                                  formType="billing"
                     />
+                    {error && <Typography color="error">{error}</Typography>}
+                    {loading && <Typography>Loading...</Typography>}
+                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                mt: 3,
+                                mb: 2,
+                                fontWeight: 500,
+                                fontSize: '16px',
+                                backgroundColor: '#2c2c2c',
+                                color: '#F5F4F2',
+                                boxShadow: 'none',
+                                '&:hover': {
+                                    backgroundColor: '#F5F4F2',
+                                    color: '#2c2c2c',
+                                    boxShadow: 'none',
+                                },
+                                width: '10%',
+                                display: 'block'
+                            }}
+                            onClick={handleSubmit}
+                        >
+                            SAVE
+                        </Button>
+                    </Box>
                 </Box>
             </ThemeProvider>
         </>

@@ -35,7 +35,7 @@ const HeroSection = () => {
                     marginBottom: '100px',
                     cursor: 'pointer',
                 }}>
-                    ORICÂND {user ? user.firstName : ''}
+                    ORICÂND
                 </Typography>
             </Link>
             <Typography variant='h1' sx={{fontWeight: 700, fontSize: '180px', color: '#F5F4F2', lineHeight: 0.9}}>

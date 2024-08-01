@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {RouterProvider, createBrowserRouter, Navigate} from "react-router-dom";
-import {ThemeProvider} from "@mui/material";
+import {Box, ThemeProvider} from "@mui/material";
 import {theme} from "./theme/theme";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
@@ -29,6 +29,7 @@ const createRouter = (user) => {
 
 function App() {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loggedInUser = localStorage.getItem('user');
@@ -36,9 +37,14 @@ function App() {
             const foundUser = JSON.parse(loggedInUser);
             setUser(foundUser);
         }
+        setLoading(false);
     }, []);
 
     console.log("User state in App:", user);
+
+    if (loading) {
+        return <Box>Loading...</Box>;
+    }
 
     const router = createRouter(user);
 

@@ -1,11 +1,63 @@
 import {Box, Button, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, {useContext, useEffect, useState} from "react";
+import {UserContext} from "../../context/UserContext";
 
-export default function AddressForm({open, handleModalClose, handleAddressChange, formType}) {
+export default function AddressForm({open, handleModalClose, handleAddressSave, formType}) {
+    const {user} = useContext(UserContext);
+    const [address, setAddress] = useState({
+        streetLine: '',
+        postalCode: '',
+        city: '',
+        county: '',
+        country: ''
+    });
+    const [isFormValid, setIsFormValid] = useState(true);
+
+    useEffect(() => {
+        if (formType === 'billing' && user.defaultBillingAddress) {
+            setAddress(user.defaultBillingAddress);
+        } else if (formType === 'delivery' && user.defaultDeliveryAddress) {
+            setAddress(user.defaultDeliveryAddress);
+        }
+    }, [formType, user]);
+
+    const handleAddressChange = (event) => {
+        const {name, value} = event.target;
+        setAddress(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const validateForm = () => {
+        const isValid = Object.values(address).every(value => {
+            if (typeof value === 'string') {
+                return value.trim() !== '';
+            }
+            return String(value).trim() !== '';
+        });
+        setIsFormValid(isValid);
+        return isValid;
+    }
+
+    const handleSave = () => {
+        if (validateForm()) {
+            handleAddressSave(address);
+            handleModalClose();
+        } else {
+            alert('All fields are required');
+        }
+    }
+
     return (
-        <Modal open={open} onClose={handleModalClose}>
+        <Modal open={open} onClose={() => {
+            if (window.confirm("You have unsaved changes. Are you sure you want to close?")) {
+                handleModalClose();
+            }
+        }}>
             <Box
+                component="form"
                 sx={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                     width: 700, bgcolor: 'background.paper',
@@ -18,10 +70,11 @@ export default function AddressForm({open, handleModalClose, handleAddressChange
                 <TextField margin="normal"
                            required
                            fullWidth
-                           id="billingStreetLine"
+                           id="streetLine"
                            label="Street Line"
                            name="streetLine"
-                           autoComplete="billing street-address"
+                           value={address.streetLine}
+                           autoComplete="street-address"
                            sx={{
                                color: '#151515',
                                backgroundColor: '#F5F4F2',
@@ -32,10 +85,11 @@ export default function AddressForm({open, handleModalClose, handleAddressChange
                 <TextField margin="normal"
                            required
                            fullWidth
-                           id="billingPostalCode"
+                           id="postalCode"
                            label="Postal Code"
                            name="postalCode"
-                           autoComplete="billing postal-code"
+                           value={address.postalCode}
+                           autoComplete="postal-code"
                            sx={{
                                color: '#151515',
                                backgroundColor: '#F5F4F2',
@@ -46,9 +100,10 @@ export default function AddressForm({open, handleModalClose, handleAddressChange
                 <TextField margin="normal"
                            required
                            fullWidth
-                           id="billingCity"
+                           id="City"
                            label="City"
                            name="city"
+                           value={address.city}
                            sx={{
                                color: '#151515',
                                backgroundColor: '#F5F4F2',
@@ -59,8 +114,9 @@ export default function AddressForm({open, handleModalClose, handleAddressChange
                 <TextField margin="normal"
                            required
                            fullWidth
-                           id="billingCounty"
+                           id="County"
                            label="County"
+                           value={address.county}
                            name="county"
                            sx={{
                                color: '#151515',
@@ -72,8 +128,9 @@ export default function AddressForm({open, handleModalClose, handleAddressChange
                 <TextField margin="normal"
                            required
                            fullWidth
-                           id="billingCountry"
+                           id="Country"
                            label="Country"
+                           value={address.country}
                            name="country"
                            autoComplete="billing country"
                            sx={{
@@ -84,7 +141,7 @@ export default function AddressForm({open, handleModalClose, handleAddressChange
                            onChange={handleAddressChange}
                 />
                 <Button
-                    onClick={handleModalClose}
+                    onClick={handleSave}
                     fullWidth
                     variant="contained"
                     sx={{
