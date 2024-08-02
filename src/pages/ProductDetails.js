@@ -94,7 +94,6 @@ export default function ProductDetails() {
                         objectFit: 'contain',
                         height: 'auto',
                         maxWidth: '50%',
-                        height: "auto"
                     }}
                     alt={product.name}
                 />
