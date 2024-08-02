@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import {Button, Container, createTheme, TextField, ThemeProvider} from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -7,6 +7,7 @@ import Logo from '../components/logo/Logo'
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {formTheme} from "../theme/formTheme";
+import {UserContext} from "../context/UserContext";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function Register() {
         email: '',
         password: ''
     });
+    const {user, setUser} = useContext(UserContext);
 
     const handleChange = (event) => {
         const value = event.target.value;
@@ -29,6 +31,7 @@ export default function Register() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
         const userData = {
             firstName: data.firstName,
             lastName: data.lastName,
@@ -37,9 +40,11 @@ export default function Register() {
         }
         try {
             const response = await axios.post('http://localhost:8080/user/register', userData)
+            setUser(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
             console.log(response.data);
             setError(null);
-            navigate('/');
+            navigate('/account');
         } catch (error) {
             console.error(error);
             setError('Registration failed. Please try again.')
