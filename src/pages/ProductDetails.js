@@ -13,16 +13,7 @@ export default function ProductDetails() {
     const [error, setError] = useState(null);
     const [sizes, setSizes] = useState([]);
     const [size, setSize] = useState('');
-    const [imgSrc, setImgSrc] = useState(``);
-    const [fallbacks, setFallbacks] = useState([]);
-    const [fallbackIndex, setFallbackIndex] = useState(0);
 
-    const handleError = () => {
-        if (fallbackIndex < fallbacks.length) {
-            setImgSrc(fallbacks[fallbackIndex]);
-            setFallbackIndex(fallbackIndex + 1);
-        }
-    };
 
     useEffect(() => {
         async function getProduct() {
@@ -51,10 +42,6 @@ export default function ProductDetails() {
                 .map(attribute => attribute.attributeValue);
 
             setSizes(sizes);
-
-            const baseSrc = `/resurseProiect/${product.name}`;
-            setImgSrc(`${baseSrc}.webp`);
-            setFallbacks([`${baseSrc}.jpg`, `${baseSrc}.png`]);
         }
         console.log(sizes);
     }, [product]);
@@ -87,8 +74,7 @@ export default function ProductDetails() {
             </Link>
             <Box sx={{display: 'flex', padding: '100px 0'}}>
                 <img
-                    src={imgSrc}
-                    onError={handleError}
+                    src={`/resurseProiect/${product.name}.webp`}
                     style={{
                         flex: 1,
                         objectFit: 'contain',
@@ -205,8 +191,8 @@ export default function ProductDetails() {
                         <Typography sx={{mb: 2}}>
                             <b>{product.name}</b>
                         </Typography>
-                        {product.attributes.map(attribute =>
-                            <Typography>
+                        {product.attributes.map((attribute, index) =>
+                            <Typography key={index}>
                                 <b>{attribute.attributeName}</b>:&nbsp;{attribute.attributeValue}
                             </Typography>
                         )}

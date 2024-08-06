@@ -10,6 +10,7 @@ import {UserContext} from "./context/UserContext";
 import Account from "./pages/Account";
 import UserEdit from "./pages/UserEdit";
 import ProductDetails from "./pages/ProductDetails";
+import AllProducts from "./pages/AllProducts";
 
 const createRouter = (user) => {
     return createBrowserRouter([
@@ -23,6 +24,7 @@ const createRouter = (user) => {
                 {path: '/account', element: user ? <Account/> : <Navigate to="/login"/>},
                 {path: '/edit-user', element: user ? <UserEdit/> : <Navigate to="/login"/>},
                 {path: '/products/:id', element: <ProductDetails/>},
+                {path: '/collections/all', element: <AllProducts/>},
             ],
         },
     ]);

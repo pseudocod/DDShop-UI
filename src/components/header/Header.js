@@ -120,11 +120,13 @@ export default function Header() {
                                 SHOP
                             </Typography>
                         </ListItem>
-                        <ListItemButton>
-                            <Typography variant="body2" sx={{fontSize: '22px', fontWeight: 500}}>
-                                All Products
-                            </Typography>
-                        </ListItemButton>
+                        <Link to='/collections/all'>
+                            <ListItemButton>
+                                <Typography variant="body2" sx={{fontSize: '22px', fontWeight: 500}}>
+                                    All Products
+                                </Typography>
+                            </ListItemButton>
+                        </Link>
                         <ListItemButton>
                             <Typography variant="body2" sx={{fontSize: '22px', fontWeight: 500}}>
                                 Flashbrew

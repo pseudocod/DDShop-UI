@@ -145,7 +145,7 @@ export default function Account() {
                     </Typography>
                 </Link>
                 <img
-                    src="/resurseProiect/AllProducts.webp"
+                    src="/resurseProiect/pexels-biasousa-22679426.jpg"
                     style={{
                         width: '100%',
                         height: '100%',
