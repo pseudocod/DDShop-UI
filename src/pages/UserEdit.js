@@ -126,25 +126,29 @@ export default function UserEdit() {
     return (
         <>
             <ThemeProvider theme={editFormTheme}>
-                <Link to="/">
-                    <Typography variant='h1' sx={{
-                        fontWeight: 700,
-                        color: '#151515',
-                        fontSize: '30px',
-                        marginBottom: '50px',
-                        cursor: 'pointer',
-                        ml: '50px',
-                        mt: '30px'
-                    }}>
-                        ORICÂND
-                    </Typography>
-                </Link>
+                <Box sx={{
+                    mt: '30px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Link to="/">
+                        <Typography variant='h1' sx={{
+                            fontWeight: 300,
+                            color: '#151515',
+                            fontSize: '80px',
+                            cursor: 'pointer',
+                        }}>
+                            BACK HOME
+                        </Typography>
+                    </Link>
+                </Box>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginTop: '50px'
+                    marginTop: '50px',
                 }}
                 >
                     <Typography variant='h1'
@@ -303,6 +307,8 @@ export default function UserEdit() {
                     </Box>
                 </Box>
             </ThemeProvider>
+
         </>
     )
 }
+

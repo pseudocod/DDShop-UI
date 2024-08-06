@@ -62,9 +62,9 @@ export default function ProductDetails() {
         <>
             <Link to="/">
                 <Typography variant='h1' sx={{
-                    fontWeight: 700,
+                    fontWeight: 300,
                     color: '#151515',
-                    fontSize: '30px',
+                    fontSize: '80px',
                     cursor: 'pointer',
                     mt: '30px',
                     ml: '50px'
@@ -72,7 +72,7 @@ export default function ProductDetails() {
                     ORICÂND
                 </Typography>
             </Link>
-            <Box sx={{display: 'flex', padding: '100px 0'}}>
+            <Box sx={{display: 'flex', padding: '30px 0 100px 0'}}>
                 <img
                     src={`/resurseProiect/${product.name}.webp`}
                     style={{

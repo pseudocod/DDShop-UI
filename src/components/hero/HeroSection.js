@@ -7,6 +7,7 @@ import ProductBox from "../product/ProductBox";
 const HeroSection = () => {
     const location = useLocation();
     const isHomepage = location.pathname === '/';
+    const [isHovered, setIsHovered] = React.useState(false);
 
     const handleLogoClick = (event) => {
         if (isHomepage) {
@@ -21,33 +22,62 @@ const HeroSection = () => {
                 paddingTop: '30px',
                 paddingBottom: '70px',
                 paddingLeft: '50px',
-                backgroundImage: `url('/resurseProiect/hero-section-1.jpg')`,
+                backgroundImage: `url('/resurseProiect/Specialty.webp')`,
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                height: '200vh'
+                height: '180vh'
             }}>
                 <Link to="/" onClick={handleLogoClick}>
                     <Typography variant='h1' sx={{
-                        fontWeight: 700,
+                        fontWeight: 200,
                         color: '#F5F4F2',
-                        fontSize: '30px',
+                        fontSize: '100px',
                         marginBottom: '100px',
                         cursor: 'pointer',
-                    }}>
-                        ORICÂND
+                        transition: 'all 1s',
+                        display: 'inline-block',
+                    }}
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => setIsHovered(false)}>
+                        {isHovered ? 'ANYTIME' : 'ORICÂND'}
                     </Typography>
                 </Link>
+                <Typography variant='h1' sx={{
+                    fontWeight: 700,
+                    fontSize: '100px',
+                    color: '#F5F4F2',
+                    lineHeight: 0.9,
+                    mb: 3,
+                }}>
+                    START NOW
+                </Typography>
+                <Typography variant='h1' sx={{
+                    fontWeight: 700,
+                    fontSize: '100px',
+                    color: '#F5F4F2',
+                    lineHeight: 0.9,
+                    mb: 3,
+                }}>
+                    FOLLOW YOUR DREAMS
+                </Typography>
+                <Typography variant='h1' sx={{
+                    fontWeight: 700,
+                    fontSize: '100px',
+                    color: '#F5F4F2',
+                    lineHeight: 0.9,
+                    mb: 3,
+                }}>
+                    BE YOURSELF
+                </Typography>
                 <Typography variant='h1' sx={{
                     fontWeight: 700,
                     fontSize: '180px',
                     color: '#F5F4F2',
                     lineHeight: 0.9,
+                    mb: 3,
                 }}>
-                    GO<br/>
-                    AGAINST<br/>
-                    THE<br/>
-                    GRAIN<br/>
+                    ANYTIME
                 </Typography>
                 <Box sx={{
                     display: 'flex',
@@ -71,6 +101,7 @@ const HeroSection = () => {
                         <Typography variant='h4' sx={{
                             fontWeight: 600,
                             lineHeight: 0.9,
+                            fontSize: '40px',
                         }}>
                             Surrender to the moment with<br/>
                             each sip and every cup of our<br/>

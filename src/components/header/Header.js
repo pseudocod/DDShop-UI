@@ -138,11 +138,13 @@ export default function Header() {
                             </Typography>
                         </ListItemButton>
                         <Divider/>
-                        <ListItemButton>
-                            <Typography variant="body2" sx={{fontSize: '18px', fontWeight: 600}}>
-                                ABOUT ORICÂND
-                            </Typography>
-                        </ListItemButton>
+                        <Link to='/about'>
+                            <ListItemButton>
+                                <Typography variant="body2" sx={{fontSize: '18px', fontWeight: 600}}>
+                                    ABOUT ORICÂND
+                                </Typography>
+                            </ListItemButton>
+                        </Link>
                         <Divider/>
                         <ListItemButton>
                             <Typography variant="body2" sx={{fontSize: '18px', fontWeight: 600}}>

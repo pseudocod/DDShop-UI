@@ -45,7 +45,6 @@ export default function ProductBox() {
                 <Typography sx={{fontSize: '2rem', fontWeight: 500}}>
                     A Romanian specialty <br/> coffee company
                 </Typography>
-                <LocalCafeOutlinedIcon sx={{mt: 1, fontSize: '3rem'}}/>
             </Box>
             {products.map((product) => (
                 <Box key={product.id} sx={{

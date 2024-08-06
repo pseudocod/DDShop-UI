@@ -9,7 +9,7 @@ export default function ProductBoxPresentation({product}) {
         <>
             <Box sx={{
                 width: '100%',
-                maxWidth: '600px',
+                maxWidth: '550px',
                 backgroundColor: '#F5F4F2',
                 padding: '20px',
                 borderRadius: '2px',

@@ -127,7 +127,7 @@ export default function Account() {
                     {/*<PasswordForm/>*/}
                 </Box>
             </Box>
-            <Box sx={{backgroundColor: '#151515', height: '50vh', overflow: 'hidden', position: 'relative'}}>
+            <Box sx={{backgroundColor: '#151515', height: '60vh', overflow: 'hidden', position: 'relative'}}>
                 <Link to={'/'}>
                     <Typography variant='h1'
                                 sx={{

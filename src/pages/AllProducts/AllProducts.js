@@ -1,18 +1,20 @@
 import {Box, CircularProgress, FormControl, InputLabel, NativeSelect} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import ProductBoxPresentation from "../components/product/ProductBoxPresentation";
+import ProductBoxPresentation from "../../components/product/ProductBoxPresentation";
 import Divider from "@mui/material/Divider";
+import {TransitionGroup, CSSTransition} from "react-transition-group";
+import './AllProducts.css';
 
 export default function AllProducts() {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('1');
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
@@ -34,14 +36,23 @@ export default function AllProducts() {
         fetchData();
     }, []);
 
-
     function handleChange(e) {
-        setSelectedCategory(e.target.value);
+        const selectedCategoryId = e.target.value;
+        setSelectedCategory(selectedCategoryId);
+        const categoryName = selectedCategoryId === '1'
+            ? 'all'
+            : categories.find(category => category.id === parseInt(selectedCategoryId))?.name;
+        navigate(`/collections/${categoryName}`);
     }
 
     const filteredProducts = selectedCategory === '1'
         ? products
         : products.filter(product => product.category.id === parseInt(selectedCategory));
+
+    const selectedCategoryObject = categories.find(category => category.id === parseInt(selectedCategory));
+    const backgroundUrl = selectedCategory === '1'
+        ? '/resurseProiect/AllProducts.webp'
+        : `/resurseProiect/${selectedCategoryObject?.name}.webp`;
 
     if (loading) {
         return (
@@ -59,11 +70,10 @@ export default function AllProducts() {
         );
     }
 
-
     return (
-        <Box sx={{backgroundColor: '#FFFFFF'}}>
+        <Box sx={{backgroundColor: '#F9F9F9'}}>
             <Box sx={{
-                backgroundImage: `url('/resurseProiect/AllProducts.webp')`,
+                backgroundImage: `url(${backgroundUrl})`,
                 height: '60vh',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
@@ -112,11 +122,23 @@ export default function AllProducts() {
                     <Divider sx={{background: '#ffffff', height: '0.5px', width: '300px', display: 'block'}}/>
                 </Box>
             </Box>
-            <Typography sx={{fontSize: '8rem', fontWeight: 600, color: '#151515'}}>ALL PRODUCTS</Typography>
+            <Typography sx={{
+                fontSize: '8rem',
+                fontWeight: 600,
+                color: '#151515'
+            }}>{selectedCategory === '1' ? 'ALL PRODUCTS' : selectedCategoryObject?.name.toUpperCase()}</Typography>
             <Box sx={{display: 'flex', flexWrap: 'wrap', gap: '10px', padding: 1}}>
-                {filteredProducts.map(product => (
-                    <ProductBoxPresentation key={product.id} product={product}/>
-                ))}
+                <TransitionGroup component={null}>
+                    {filteredProducts.map(product => (
+                        <CSSTransition
+                            key={product.id}
+                            timeout={300}
+                            classNames="fade"
+                        >
+                            <ProductBoxPresentation key={product.id} product={product}/>
+                        </CSSTransition>
+                    ))}
+                </TransitionGroup>
             </Box>
         </Box>
     );
