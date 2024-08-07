@@ -44,9 +44,9 @@ export default function ProductBoxPresentation({product}) {
                             <Typography variant='h1'>{product.category.name}</Typography>
                         </Box>
                         <Box>
-                            {product.attributes.map(attribute => {
+                            {product.attributes.map((attribute, index) => {
                                 return (
-                                    <Typography>
+                                    <Typography key={index}>
                                         {attribute.attributeName + ': ' + attribute.attributeValue}
                                     </Typography>
                                 )

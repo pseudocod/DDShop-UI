@@ -16,11 +16,13 @@ import {ListItemButton} from '@mui/material';
 import {Link} from "react-router-dom";
 import {useContext} from "react";
 import {UserContext} from "../../context/UserContext";
+import CartDrawer from "./CartDrawer";
 
 export default function Header() {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const {user} = useContext(UserContext);
+    const [openCart, setOpenCart] = React.useState(false);
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -29,6 +31,14 @@ export default function Header() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleCartToggle = () => {
+        setOpenCart(!openCart);
+    }
+
+    const handleCartClose = () => {
+        setOpenCart(false);
+    }
 
     return (
         <AppBar
@@ -78,6 +88,7 @@ export default function Header() {
                         size="large"
                         aria-label="shopping cart of user"
                         color="inherit"
+                        onClick={handleCartToggle}
                     >
                         <LocalMallOutlinedIcon/>
                     </IconButton>
@@ -93,7 +104,7 @@ export default function Header() {
                     </Link>
                 </Box>
             </Toolbar>
-
+            <CartDrawer theme={theme} open={openCart} handleClose={handleCartClose}/>
             <Drawer
                 variant="temporary"
                 anchor="right"
@@ -121,22 +132,12 @@ export default function Header() {
                             </Typography>
                         </ListItem>
                         <Link to='/collections/all'>
-                            <ListItemButton>
+                            <ListItemButton sx={{mb: 50}}>
                                 <Typography variant="body2" sx={{fontSize: '22px', fontWeight: 500}}>
                                     All Products
                                 </Typography>
                             </ListItemButton>
                         </Link>
-                        <ListItemButton>
-                            <Typography variant="body2" sx={{fontSize: '22px', fontWeight: 500}}>
-                                Flashbrew
-                            </Typography>
-                        </ListItemButton>
-                        <ListItemButton sx={{mb: 40}}>
-                            <Typography variant="body2" sx={{fontSize: '22px', fontWeight: 500}}>
-                                Gift Card
-                            </Typography>
-                        </ListItemButton>
                         <Divider/>
                         <Link to='/about'>
                             <ListItemButton>

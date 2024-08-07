@@ -1,10 +1,11 @@
 import {Alert, Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
 import {Link, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import QuantityInput from "../components/input/QuantityInput";
 import CheckIcon from '@mui/icons-material/Check';
+import {UserContext} from "../context/UserContext";
 
 export default function ProductDetails() {
     const {id} = useParams();
@@ -13,8 +14,9 @@ export default function ProductDetails() {
     const [error, setError] = useState(null);
     const [sizes, setSizes] = useState([]);
     const [size, setSize] = useState('');
+    const [quantity, setQuantity] = useState(1);
 
-
+    const {user, setUser} = useContext(UserContext);
     useEffect(() => {
         async function getProduct() {
             try {
@@ -54,9 +56,40 @@ export default function ProductDetails() {
             typeof value === 'string' ? value.split(',') : value,
         );
     };
+    const handleQuantityInputChange = (newValue) => {
+        setQuantity(newValue);
+    }
+    const handleAddToCart = async () => {
+        if (quantity < 1) {
+            console.error('Quantity must be at least 1');
+            return;
+        }
+        if (!user || !user.userCarts || user.userCarts.length === 0) {
+            console.error('No cart found. Please create or select a cart.');
+            return;
+        }
+        try {
+            setLoading(true);
+            console.log('Adding product to cart:', product.id, size, quantity);
+            await axios.post(`http://localhost:8080/carts/${user.userCarts[0].id}/add-to-cart`,
+                {
+                    productId: product.id,
+                    quantity: quantity,
+                });
+            const response = await axios.get(`http://localhost:8080/user/${user.id}`);
+            setUser(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
+            setError(null);
+            console.log(response.data);
+        } catch (error) {
+            setError('Failed to add product to cart');
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     if (loading) return <Box>Loading...</Box>;
-    if (error) return <Alert severity="error">{error}</Alert>;
 
     return (
         <>
@@ -116,7 +149,10 @@ export default function ProductDetails() {
                             </Select>
                         </FormControl>
                         <QuantityInput
-                            onChange={(event, newValue) => console.log(`${event.type} event: the new value is ${newValue}`)}/>
+                            value={quantity}
+                            onChange={handleQuantityInputChange}
+                            min={1}
+                            max={20}/>
                     </Box>
                     <Button
                         fullWidth
@@ -135,9 +171,12 @@ export default function ProductDetails() {
                                 boxShadow: 'none',
                             },
                         }}
+                        onClick={handleAddToCart}
+                        disabled={loading}
                     >
-                        ADD TO CART
+                        {loading ? 'ADDING...' : 'ADD TO CART'}
                     </Button>
+                    {error && <Alert severity="error">{error}</Alert>}
                     <Box sx={{mb: 10}}>
                         <Typography variant='body2'
                                     sx={{
