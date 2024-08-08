@@ -2,22 +2,33 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
-import {Link} from "react-router-dom";
-import {Button, ListItemButton} from "@mui/material";
+import {ListItemButton} from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import * as React from "react";
 import {UserContext} from "../../context/UserContext";
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import CartEntryBox from "./CartEntryBox";
+import {CartContext} from "../../context/CartContext";
+import {Link} from "react-router-dom";
 
 export default function CartDrawer({open, handleClose, theme}) {
     const {user} = useContext(UserContext);
-    const [cart, setCart] = useState(user?.userCarts[0] || {});
+    const {cart, loading, error} = useContext(CartContext);
 
-    useEffect(() => {
-        setCart(user?.userCarts[0] || {});
-    }, [user]);
+    if (loading) {
+        return (
+            <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+                <Typography>
+                    Loading cart...
+                </Typography>
+            </Box>
+        )
+    }
+
+    if (error) {
+        return null;
+    }
 
     if (!user) {
         return null;
@@ -62,21 +73,23 @@ export default function CartDrawer({open, handleClose, theme}) {
                             </ListItem>
                         ))
                     }
-                    <Divider/>
-                    <ListItem>
-                        <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                            <Box>
-                                <Typography sx={{fontWeight: 500, fontSize: '1.25rem'}}>
-                                    {cart.cartEntries.length === 0 ? '' : `SUBTOTAL: \u20ac${cart.totalPrice.toFixed(2)}`}
-                                </Typography>
-                            </Box>
-                            <Typography>
-                                Taxes and shipping calculated at checkout
-                            </Typography>
-                        </Box>
-                    </ListItem>
-
-                    <ListItemButton fullWidth
+                    {cart.cartEntries.length === 0 ? '' :
+                        <>
+                            <Divider/>
+                            <ListItem>
+                                <Box sx={{display: 'flex', flexDirection: 'column'}}>
+                                    <Box>
+                                        <Typography sx={{fontWeight: 500, fontSize: '1.25rem'}}>
+                                            {`SUBTOTAL: \u20ac${cart.totalPrice.toFixed(2)}`}
+                                        </Typography>
+                                    </Box>
+                                    <Typography>
+                                        Taxes and shipping calculated at checkout
+                                    </Typography>
+                                </Box>
+                            </ListItem>
+                            <Link to='/checkout'>
+                                <ListItemButton
                                     variant="contained"
                                     sx={{
                                         mb: 2,
@@ -95,8 +108,11 @@ export default function CartDrawer({open, handleClose, theme}) {
                                             boxShadow: 'none',
                                         },
                                     }}>
-                        CHECK OUT
-                    </ListItemButton>
+                                    CHECK OUT
+                                </ListItemButton>
+                            </Link>
+                        </>
+                    }
                 </List>
             </Box>
         </Drawer>

@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import QuantityInput from "../components/input/QuantityInput";
 import CheckIcon from '@mui/icons-material/Check';
 import {UserContext} from "../context/UserContext";
+import {CartContext} from "../context/CartContext";
 
 export default function ProductDetails() {
     const {id} = useParams();
@@ -17,6 +18,8 @@ export default function ProductDetails() {
     const [quantity, setQuantity] = useState(1);
 
     const {user, setUser} = useContext(UserContext);
+    const {addToCart, loading: loadingAddToCart} = useContext(CartContext);
+
     useEffect(() => {
         async function getProduct() {
             try {
@@ -69,27 +72,14 @@ export default function ProductDetails() {
             return;
         }
         try {
-            setLoading(true);
-            console.log('Adding product to cart:', product.id, size, quantity);
-            await axios.post(`http://localhost:8080/carts/${user.userCarts[0].id}/add-to-cart`,
-                {
-                    productId: product.id,
-                    quantity: quantity,
-                });
-            const response = await axios.get(`http://localhost:8080/user/${user.id}`);
-            setUser(response.data);
-            localStorage.setItem('user', JSON.stringify(response.data));
-            setError(null);
-            console.log(response.data);
+            await addToCart(product.id, quantity);
         } catch (error) {
             setError('Failed to add product to cart');
             console.error(error);
-        } finally {
-            setLoading(false);
         }
     }
 
-    if (loading) return <Box>Loading...</Box>;
+    if (loading || loadingAddToCart) return <Box>Loading...</Box>;
 
     return (
         <>

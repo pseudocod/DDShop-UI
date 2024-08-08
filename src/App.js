@@ -12,6 +12,8 @@ import UserEdit from "./pages/UserEdit";
 import ProductDetails from "./pages/ProductDetails";
 import AllProducts from "./pages/AllProducts/AllProducts";
 import About from "./pages/About";
+import CartProvider from "./context/CartContext";
+import Checkout from "./pages/Checkout";
 
 
 const createRouter = (user) => {
@@ -29,6 +31,7 @@ const createRouter = (user) => {
                 {path: '/collections/all', element: <AllProducts/>},
                 {path: '/collections/:categoryName', element: <AllProducts/>},
                 {path: '/about', element: <About/>},
+                {path: 'checkout', element: <Checkout/>}
             ],
         },
     ]);
@@ -59,7 +62,9 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <UserContext.Provider value={{user, setUser}}>
-                <RouterProvider router={router}/>
+                <CartProvider>
+                    <RouterProvider router={router}/>
+                </CartProvider>
             </UserContext.Provider>
         </ThemeProvider>
     );
