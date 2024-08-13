@@ -42,7 +42,8 @@ export default function Account() {
                     ml: '50px',
                     paddingRight: '150px',
                     display: 'flex',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap'
                 }}>
                     <Box>
                         <Typography sx={{fontWeight: 600, fontSize: '1.1rem', mb: 2}}>ACCOUNT DETAILS</Typography>

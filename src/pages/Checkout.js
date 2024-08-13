@@ -242,6 +242,7 @@ export default function Checkout() {
                     alignItems: 'center',
                     padding: '20px',
                     height: '100%',
+                    flexWrap: 'wrap'
                 }}>
                     <Box sx={{
                         backgroundColor: '#F9F9F9',

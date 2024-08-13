@@ -35,7 +35,7 @@ export default function ProductBox() {
     }
 
     return (
-        <Box sx={{display: 'flex', color: '#F5F4F2', width: '99%'}}>
+        <Box sx={{display: 'flex', color: '#F5F4F2', width: '99%', flexWrap: 'wrap'}}>
             <Box sx={{
                 border: '1px solid #F5F4F2',
                 borderRadius: '8px',

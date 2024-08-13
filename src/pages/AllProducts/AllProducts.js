@@ -1,4 +1,4 @@
-import {Box, CircularProgress, FormControl, InputLabel, NativeSelect} from "@mui/material";
+import {Box, CircularProgress, FormControl, InputLabel, NativeSelect, useMediaQuery} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -7,6 +7,7 @@ import ProductBoxPresentation from "../../components/product/ProductBoxPresentat
 import Divider from "@mui/material/Divider";
 import {TransitionGroup, CSSTransition} from "react-transition-group";
 import './AllProducts.css';
+import {useTheme} from "@mui/material/styles";
 
 export default function AllProducts() {
     const [loading, setLoading] = useState(true);
@@ -15,6 +16,8 @@ export default function AllProducts() {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('1');
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         async function fetchData() {
@@ -71,10 +74,10 @@ export default function AllProducts() {
     }
 
     return (
-        <Box sx={{backgroundColor: '#F9F9F9'}}>
+        <Box sx={{backgroundColor: '#F9F9F9', width: '100%'}}>
             <Box sx={{
                 backgroundImage: `url(${backgroundUrl})`,
-                height: '60vh',
+                minHeight: '60vh',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -83,17 +86,25 @@ export default function AllProducts() {
                 justifyContent: 'space-between'
             }}>
                 <Link to="/">
-                    <Typography variant='h1' sx={{color: '#FFFFFF'}}>ORICÂND</Typography>
+                    <Typography variant={isMobile ? 'h2' : 'h1'}
+                                sx={{color: '#FFFFFF', paddingTop: isMobile && '80px'}}>
+                        ORICÂND
+                    </Typography>
                 </Link>
                 <Box sx={{
                     display: 'flex',
-                    paddingRight: '100px',
+                    paddingRight: isMobile ? '0' : '100px',
                     flexDirection: 'column',
                     alignItems: 'flex-end',
-                    marginBottom: '100px',
+                    marginBottom: isMobile ? '20px' : '100px',
                 }}>
-                    <Divider sx={{background: '#ffffff', height: '0.1px', width: '300px', display: 'block'}}/>
-                    <FormControl sx={{backgroundColor: 'transparent', width: '300px',}}>
+                    <Divider sx={{
+                        background: '#ffffff',
+                        height: '0.1px',
+                        width: isMobile ? '150px' : '300px',
+                        display: 'block'
+                    }}/>
+                    <FormControl sx={{backgroundColor: 'transparent', width: isMobile ? '150px' : '300px',}}>
                         <InputLabel sx={{color: '#FFFFFF'}} variant="standard" htmlFor="uncontrolled-native">
                             Filter
                         </InputLabel>
@@ -119,15 +130,27 @@ export default function AllProducts() {
                             ))}
                         </NativeSelect>
                     </FormControl>
-                    <Divider sx={{background: '#ffffff', height: '0.5px', width: '300px', display: 'block'}}/>
+                    <Divider sx={{
+                        background: '#ffffff',
+                        height: '0.5px',
+                        width: isMobile ? '150px' : '300px',
+                        display: 'block'
+                    }}/>
                 </Box>
             </Box>
             <Typography sx={{
-                fontSize: '8rem',
+                fontSize: isMobile ? '2em' : '7em',
                 fontWeight: 600,
                 color: '#151515'
             }}>{selectedCategory === '1' ? 'ALL PRODUCTS' : selectedCategoryObject?.name.toUpperCase()}</Typography>
-            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: '10px', padding: 1}}>
+            <Box sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                padding: 1,
+                gap: '3em',
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+            }}>
                 <TransitionGroup component={null}>
                     {filteredProducts.map(product => (
                         <CSSTransition

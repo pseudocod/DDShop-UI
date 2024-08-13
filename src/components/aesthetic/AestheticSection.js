@@ -1,9 +1,12 @@
 import React from 'react'
 import {Link} from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import {Box} from "@mui/material";
+import {Box, useMediaQuery} from "@mui/material";
+import {useTheme} from "@mui/material/styles";
 
 export default function AestheticSection() {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     return (
         <>
             <Box sx={{backgroundColor: '#151515', height: '100vh', overflow: 'hidden', position: 'relative'}}>
@@ -12,14 +15,14 @@ export default function AestheticSection() {
                                 sx={{
                                     fontWeight: 700,
                                     zIndex: 1,
-                                    fontSize: '100px',
+                                    fontSize: isMobile ? '50px' : '100px',
                                     color: '#F5F4F2',
                                     lineHeight: 0.9,
                                     top: '50%',
                                     left: '50%',
                                     transform: 'translate(-50%, -50%)',
                                     position: 'absolute',
-                                    whiteSpace: 'nowrap',
+                                    textAlign: 'center'
                                 }}>
                         ABOUT ORICÂND
                     </Typography>
@@ -28,7 +31,7 @@ export default function AestheticSection() {
                     src="/resurseProiect/About.webp"
                     style={{
                         width: '100%',
-                        height: '100%',
+                        minHeight: '100%',
                         objectFit: 'cover',
                         display: 'block',
                         position: 'absolute',

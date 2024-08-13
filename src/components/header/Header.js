@@ -17,12 +17,14 @@ import {Link} from "react-router-dom";
 import {useContext} from "react";
 import {UserContext} from "../../context/UserContext";
 import CartDrawer from "./CartDrawer";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Header() {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const {user} = useContext(UserContext);
     const [openCart, setOpenCart] = React.useState(false);
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -41,69 +43,99 @@ export default function Header() {
     }
 
     return (
-        <AppBar
-            position="fixed"
-            sx={{
-                width: '90px',
-                backgroundColor: '#FFFFFF',
-                color: '#151515',
-                boxShadow: 'none',
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-                height: '100vh',
-                zIndex: theme.zIndex.drawer + 1,
-                overflow: 'hidden',
-            }}
-        >
-            <Toolbar sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100vh',
-                padding: '8px 0',
-            }}>
-                <IconButton
-                    size="large"
-                    color="inherit"
-                    aria-label="menu icon for opening drawer"
-                    sx={{mb: 2}}
-                    onClick={handleDrawerToggle}
-                >
-                    <MenuIcon/>
-                </IconButton>
-                <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
-                    Free Shipping
-                </Typography>
-                <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
-                    London orders 40£+ (by bike)
-                </Typography>
-                <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
-                    Wales orders 50£+ | <br/>
-                    Scotland orders 60£+
-                </Typography>
-                <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                    <IconButton
-                        size="large"
-                        aria-label="shopping cart of user"
-                        color="inherit"
-                        onClick={handleCartToggle}
-                    >
-                        <LocalMallOutlinedIcon/>
-                    </IconButton>
-                    <Link to={user ? "/account" : "/login"}>
+        <Box>
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: isMobile ? '100%' : '90px', // Full width on mobile, fixed width on larger screens
+                    backgroundColor: '#FFFFFF',
+                    color: '#151515',
+                    boxShadow: 'none',
+                    height: isMobile ? '60px' : '100vh',
+                    zIndex: theme.zIndex.drawer + 1,
+                }}
+            >
+                <Toolbar sx={{
+                    display: 'flex',
+                    flexDirection: isMobile ? 'row' : 'column',
+                    alignItems: 'center',
+                    justifyContent: isMobile ? 'space-between' : 'center',
+                    height: '100vh',
+                    padding: '8px 0',
+                }}>
+                    {isMobile && (
+                        <Box component={Link} to="/"
+                             sx={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit'}}>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: 300,
+                                    fontSize: '20px',
+                                    color: '#151515',
+                                    padding: '20px'
+                                }}
+                            >
+                                ANYTIME
+                            </Typography>
+                        </Box>
+                    )}
+                    {!isMobile && (
+                        <>
+                            <IconButton
+                                size="large"
+                                color="inherit"
+                                aria-label="menu icon for opening drawer"
+                                sx={{mb: isMobile ? 0 : 2}}
+                                onClick={handleDrawerToggle}
+                            >
+                                <MenuIcon/>
+                            </IconButton>
+
+                            <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
+                                Free Shipping
+                            </Typography>
+                            <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
+                                London orders 40£+ (by bike)
+                            </Typography>
+                            <Typography variant="body2" component="div" sx={{writingMode: 'vertical-rl', mb: 2}}>
+                                Wales orders 50£+ | <br/>
+                                Scotland orders 60£+
+                            </Typography>
+                        </>
+                    )}
+                    <Box sx={{display: 'flex', flexDirection: isMobile ? 'row' : 'column'}}>
                         <IconButton
                             size="large"
-                            aria-label="account of current user"
+                            aria-label="shopping cart of user"
                             color="inherit"
-                            sx={{mb: 2}}
+                            onClick={handleCartToggle}
                         >
-                            <AccountCircleOutlinedIcon/>
+                            <LocalMallOutlinedIcon/>
                         </IconButton>
-                    </Link>
-                </Box>
-            </Toolbar>
+                        <Link to={user ? "/account" : "/login"}>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                color="inherit"
+                                sx={{mb: isMobile ? 0 : 2}}
+                            >
+                                <AccountCircleOutlinedIcon/>
+                            </IconButton>
+                        </Link>
+                        {isMobile && (
+                            <IconButton
+                                size="large"
+                                color="inherit"
+                                aria-label="menu icon for opening drawer"
+                                sx={{mb: isMobile ? 0 : 2}}
+                                onClick={handleDrawerToggle}
+                            >
+                                <MenuIcon/>
+                            </IconButton>
+                        )}
+                    </Box>
+                </Toolbar>
+            </AppBar>
             <CartDrawer theme={theme} open={openCart} handleClose={handleCartClose}/>
             <Drawer
                 variant="temporary"
@@ -112,7 +144,7 @@ export default function Header() {
                 onClose={handleClose}
                 sx={{
                     '& .MuiDrawer-paper': {
-                        width: '550px',
+                        width: isMobile ? '100%' : '550px', // Full width on mobile, fixed width on larger screens
                         boxSizing: 'border-box',
                         display: 'flex',
                         flexDirection: 'column',
@@ -124,7 +156,11 @@ export default function Header() {
                     },
                 }}
             >
-                <Box sx={{overflow: 'auto', flex: 1, pr: 8, paddingLeft: '16px', paddingTop: '50px'}}>
+                <Box sx={{
+                    overflow: 'auto',
+                    flex: 1,
+                    padding: '50px 16px 0 16px',
+                }}>
                     <List>
                         <ListItem sx={{mb: 3}}>
                             <Typography variant="body2" sx={{fontSize: '18px', fontWeight: 600}}>
@@ -141,7 +177,8 @@ export default function Header() {
                         <Divider/>
                         <Link to='/about'>
                             <ListItemButton>
-                                <Typography variant="body2" sx={{fontSize: '18px', fontWeight: 600}}>
+                                <Typography variant="body2"
+                                            sx={{fontSize: '18px', fontWeight: 600}}>
                                     ABOUT ORICÂND
                                 </Typography>
                             </ListItemButton>
@@ -156,6 +193,6 @@ export default function Header() {
                     </List>
                 </Box>
             </Drawer>
-        </AppBar>
+        </Box>
     );
 }

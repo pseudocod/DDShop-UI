@@ -7,6 +7,8 @@ import QuantityInput from "../components/input/QuantityInput";
 import CheckIcon from '@mui/icons-material/Check';
 import {UserContext} from "../context/UserContext";
 import {CartContext} from "../context/CartContext";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {useTheme} from "@mui/material/styles";
 
 export default function ProductDetails() {
     const {id} = useParams();
@@ -16,6 +18,8 @@ export default function ProductDetails() {
     const [sizes, setSizes] = useState([]);
     const [size, setSize] = useState('');
     const [quantity, setQuantity] = useState(1);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const {user, setUser} = useContext(UserContext);
     const {addToCart, loading: loadingAddToCart} = useContext(CartContext);
@@ -83,30 +87,38 @@ export default function ProductDetails() {
 
     return (
         <>
-            <Link to="/">
-                <Typography variant='h1' sx={{
-                    fontWeight: 300,
-                    color: '#151515',
-                    fontSize: '80px',
-                    cursor: 'pointer',
-                    mt: '30px',
-                    ml: '50px'
-                }}>
-                    ORICÂND
-                </Typography>
-            </Link>
-            <Box sx={{display: 'flex', padding: '30px 0 100px 0'}}>
+            {!isMobile &&
+                <Link to="/">
+                    <Typography variant='h1' sx={{
+                        fontWeight: 300,
+                        color: '#151515',
+                        fontSize: '80px',
+                        cursor: 'pointer',
+                        mt: isMobile ? '80px' : '30px',
+                        ml: isMobile ? '0' : '50px',
+                        textAlign: isMobile && 'center'
+                    }}>
+                        ORICÂND
+                    </Typography>
+                </Link>
+            }
+            <Box sx={{
+                display: 'flex',
+                padding: '30px 0 100px 0',
+                flexWrap: 'wrap',
+                justifyContent: isMobile ? 'center' : 'flex-start',
+                mt: isMobile && '50px'
+            }}>
                 <img
                     src={`/resurseProiect/${product.name}.webp`}
                     style={{
-                        flex: 1,
                         objectFit: 'contain',
                         height: 'auto',
-                        maxWidth: '50%',
+                        maxWidth: isMobile ? '80%' : '50%',
                     }}
                     alt={product.name}
                 />
-                <Box sx={{backgroundColor: '#FFFFFF', flex: 1, marginRight: '150px', padding: '20px'}}>
+                <Box sx={{backgroundColor: '#FFFFFF', flex: 1, marginRight: isMobile ? '0' : '150px', padding: '20px'}}>
                     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3}}>
                         <Typography variant='h4' sx={{fontWeight: 600}}>{product.name}</Typography>
                         <Typography variant='h4' sx={{fontWeight: 500}}>&#8364;{product.price.toFixed(2)}</Typography>
@@ -206,15 +218,12 @@ export default function ProductDetails() {
             </Box>
 
             <Box sx={{
-                marginRight: '80px',
-                paddingTop: '30px',
-                paddingBottom: '70px',
-                paddingLeft: '50px',
+                marginRight: isMobile ? '0' : '80px',
                 backgroundImage: `url('/resurseProiect/productDetails.webp')`,
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                height: '100vh',
+                minHeight: '100vh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
