@@ -14,6 +14,8 @@ import AllProducts from "./pages/AllProducts/AllProducts";
 import About from "./pages/About";
 import CartProvider from "./context/CartContext";
 import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import OrderSuccess from "./pages/OrderSuccess";
 
 
 const createRouter = (user) => {
@@ -31,7 +33,9 @@ const createRouter = (user) => {
                 {path: '/collections/all', element: <AllProducts/>},
                 {path: '/collections/:categoryName', element: <AllProducts/>},
                 {path: '/about', element: <About/>},
-                {path: 'checkout', element: <Checkout/>}
+                {path: 'checkout', element: <Checkout/>},
+                {path: '/order-confirmation', element: <OrderConfirmation/>},
+                {path: '/order-success', element: <OrderSuccess/>},
             ],
         },
     ]);

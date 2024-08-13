@@ -119,53 +119,57 @@ export default function ProductDetails() {
                                     }}>{product.description}
                         </Typography>
                     </Box>
-                    <Box sx={{mt: 10, display: 'flex', justifyContent: 'space-between'}}>
-                        <FormControl sx={{width: '200px'}}>
-                            <InputLabel>Size</InputLabel>
-                            <Select
-                                multiple
-                                value={sizes}
-                                onChange={handleChange}
-                                input={<OutlinedInput label="Size"/>}
-                            >
-                                {sizes.map((s) => (
-                                    <MenuItem
-                                        key={s}
-                                        value={s}
+                    {product.availableQuantity === 0 ?
+                        <Typography variant='body2'>OUT OF STOCK</Typography> :
+                        (<>
+                            <Box sx={{mt: 10, display: 'flex', justifyContent: 'space-between'}}>
+                                <FormControl sx={{width: '200px'}}>
+                                    <InputLabel>Size</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={sizes}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput label="Size"/>}
                                     >
-                                        {s}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <QuantityInput
-                            value={quantity}
-                            onChange={handleQuantityInputChange}
-                            min={1}
-                            max={20}/>
-                    </Box>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{
-                            mt: 10,
-                            mb: 5,
-                            fontWeight: 600,
-                            fontSize: 22,
-                            backgroundColor: '#151515',
-                            color: '#FFFFFF',
-                            boxShadow: 'none',
-                            '&:hover': {
-                                backgroundColor: '#FFFFFF',
-                                color: '#151515',
-                                boxShadow: 'none',
-                            },
-                        }}
-                        onClick={handleAddToCart}
-                        disabled={loading}
-                    >
-                        {loading ? 'ADDING...' : 'ADD TO CART'}
-                    </Button>
+                                        {sizes.map((s) => (
+                                            <MenuItem
+                                                key={s}
+                                                value={s}
+                                            >
+                                                {s}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <QuantityInput
+                                    value={quantity}
+                                    onChange={handleQuantityInputChange}
+                                    min={1}
+                                    max={product.availableQuantity}/>
+                            </Box>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                sx={{
+                                    mt: 10,
+                                    mb: 5,
+                                    fontWeight: 600,
+                                    fontSize: 22,
+                                    backgroundColor: '#151515',
+                                    color: '#FFFFFF',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        backgroundColor: '#FFFFFF',
+                                        color: '#151515',
+                                        boxShadow: 'none',
+                                    },
+                                }}
+                                onClick={handleAddToCart}
+                                disabled={loading}
+                            >
+                                {loading ? 'ADDING...' : 'ADD TO CART'}
+                            </Button>
+                        </>)}
                     {error && <Alert severity="error">{error}</Alert>}
                     <Box sx={{mb: 10}}>
                         <Typography variant='body2'
@@ -176,16 +180,28 @@ export default function ProductDetails() {
                         </Typography>
                     </Box>
 
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <CheckIcon sx={{color: 'green'}}/>
-                        <Typography variant='body2'
-                                    sx={{
-                                        fontWeight: 500,
-                                        fontSize: '1.2rem'
-                                    }}>
-                            Pickup available, usually ready in 2-4 days
-                        </Typography>
-                    </Box>
+                    {product.availableQuantity !== 0 ?
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                            <CheckIcon sx={{color: 'green'}}/>
+                            <Typography variant='body2'
+                                        sx={{
+                                            fontWeight: 500,
+                                            fontSize: '1.2rem'
+                                        }}>
+                                Pickup available, usually ready in 2-4 days
+                            </Typography>
+                        </Box>
+                        :
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography variant='body2'
+                                        sx={{
+                                            fontWeight: 500,
+                                            fontSize: '1.2rem'
+                                        }}>
+                                Product not available, please check back later.
+                            </Typography>
+                        </Box>
+                    }
                 </Box>
             </Box>
 

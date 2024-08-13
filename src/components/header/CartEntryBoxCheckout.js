@@ -8,7 +8,7 @@ import {CartContext} from "../../context/CartContext";
 import CloseIcon from '@mui/icons-material/Close';
 import debounce from 'lodash/debounce'
 
-export default function CartEntryBox({cartEntry}) {
+export default function CartEntryBoxCheckout({cartEntry}) {
     console.log(cartEntry);
     const product = cartEntry.product;
     const [loading, setLoading] = useState(false);
@@ -106,7 +106,7 @@ export default function CartEntryBox({cartEntry}) {
 
     return (
         <>
-            <Box sx={{display: 'flex'}}>
+            <Box sx={{display: 'flex', mb: '1rem'}}>
                 <Link to={`/products/${product.id}`}>
                     <img
                         src={`/resurseProiect/${product.name}.webp`}

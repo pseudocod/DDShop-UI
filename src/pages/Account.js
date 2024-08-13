@@ -157,7 +157,6 @@ export default function Account() {
                     }}
                 />
             </Box>
-
         </>
     );
 }

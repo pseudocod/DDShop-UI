@@ -54,8 +54,14 @@ export default function CartProvider({children}) {
         }
     };
 
+    const clearCart = () => {
+        if (cart) {
+            setCart({...cart, totalPrice: 0, cartEntries: []});
+        }
+    }
+
     return (
-        <CartContext.Provider value={{cart, loading, error, addToCart, setCart}}>
+        <CartContext.Provider value={{cart, loading, error, addToCart, setCart, clearCart}}>
             {children}
         </CartContext.Provider>
     );
