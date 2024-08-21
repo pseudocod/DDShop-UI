@@ -3,20 +3,11 @@ import {Box, Button, Typography, useMediaQuery} from '@mui/material';
 import {Link, useLocation} from 'react-router-dom';
 import {useTheme} from '@mui/material/styles';
 import ProductBox from '../product/ProductBox';
+import Logo from "../logo/Logo";
 
 const HeroSection = () => {
-    const location = useLocation();
-    const isHomepage = location.pathname === '/';
-    const [isHovered, setIsHovered] = React.useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-    const handleLogoClick = (event) => {
-        if (isHomepage) {
-            event.preventDefault();
-            window.location.reload();
-        }
-    };
 
     const headingStyle = {
         fontWeight: 700,
@@ -40,25 +31,11 @@ const HeroSection = () => {
                 minHeight: '180vh',
             }}
         >
-            <Link to="/" onClick={handleLogoClick}>
-                <Typography
-                    variant="h1"
-                    sx={{
-                        fontWeight: 200,
-                        color: '#F5F4F2',
-                        fontSize: isMobile ? '3rem' : '6rem', // Responsive font size
-                        marginBottom: isMobile ? '50px' : '100px',
-                        cursor: 'pointer',
-                        transition: 'all 1s',
-                        display: 'inline-block',
-                    }}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    {isHovered ? 'ANYTIME' : 'ORICÂND'}
-                </Typography>
-            </Link>
-
+            <Box sx={{
+                marginBottom: isMobile ? '50px' : '100px',
+            }}>
+                <Logo logoColor='#F5F4F2'/>
+            </Box>
             <Typography variant="h1" sx={headingStyle}>
                 START NOW
             </Typography>
@@ -72,7 +49,7 @@ const HeroSection = () => {
                 variant="h1"
                 sx={{
                     ...headingStyle,
-                    fontSize: isMobile ? '4rem' : '11.25rem', // Bigger font for the final statement
+                    fontSize: isMobile ? '4rem' : '11.25rem',
                     letterSpacing: '0.04em',
                 }}
             >
@@ -87,7 +64,7 @@ const HeroSection = () => {
                     flexDirection: isMobile ? 'column' : 'row',
                     paddingRight: isMobile ? 0 : '100px',
                     paddingTop: isMobile ? '40px' : '80px',
-                    marginBottom: isMobile ? '50px' : '100px',
+                    marginBottom: isMobile ? '50px' : '150px',
                 }}
             >
                 <Box
@@ -107,9 +84,9 @@ const HeroSection = () => {
                         variant="h4"
                         sx={{
                             fontWeight: 600,
-                            lineHeight: 1.1, // Adjusted for readability
-                            fontSize: isMobile ? '1.5rem' : '2.5rem', // Responsive font size
-                            textAlign: 'center',
+                            lineHeight: 1.1,
+                            fontSize: isMobile ? '1.5rem' : '2.5rem',
+                            textAlign: 'left',
                         }}
                     >
                         Surrender to the moment with

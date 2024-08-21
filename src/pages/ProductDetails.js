@@ -9,6 +9,7 @@ import {UserContext} from "../context/UserContext";
 import {CartContext} from "../context/CartContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
+import Logo from "../components/logo/Logo";
 
 export default function ProductDetails() {
     const {id} = useParams();
@@ -88,26 +89,18 @@ export default function ProductDetails() {
     return (
         <>
             {!isMobile &&
-                <Link to="/">
-                    <Typography variant='h1' sx={{
-                        fontWeight: 300,
-                        color: '#151515',
-                        fontSize: '80px',
-                        cursor: 'pointer',
-                        mt: isMobile ? '80px' : '30px',
-                        ml: isMobile ? '0' : '50px',
-                        textAlign: isMobile && 'center'
-                    }}>
-                        ORICÂND
-                    </Typography>
-                </Link>
+                <Box sx={{
+                    paddingTop: isMobile ? '80px' : '30px',
+                    paddingLeft: isMobile ? theme.spacing(2) : theme.spacing(6),
+                }}>
+                    <Logo logoColor={'#151515'}/>
+                </Box>
             }
             <Box sx={{
                 display: 'flex',
-                padding: '30px 0 100px 0',
+                padding: '20px 0 100px 0',
                 flexWrap: 'wrap',
                 justifyContent: isMobile ? 'center' : 'flex-start',
-                mt: isMobile && '50px'
             }}>
                 <img
                     src={`/resurseProiect/${product.name}.webp`}
@@ -132,7 +125,7 @@ export default function ProductDetails() {
                         </Typography>
                     </Box>
                     {product.availableQuantity === 0 ?
-                        <Typography variant='body2'>OUT OF STOCK</Typography> :
+                        <Typography variant='h3' sx={{mt: '3rem', mb: '3rem'}}>OUT OF STOCK</Typography> :
                         (<>
                             <Box sx={{mt: 10, display: 'flex', justifyContent: 'space-between'}}>
                                 <FormControl sx={{width: '200px'}}>
@@ -205,11 +198,7 @@ export default function ProductDetails() {
                         </Box>
                         :
                         <Box sx={{display: 'flex', alignItems: 'center'}}>
-                            <Typography variant='body2'
-                                        sx={{
-                                            fontWeight: 500,
-                                            fontSize: '1.2rem'
-                                        }}>
+                            <Typography variant='h4'>
                                 Product not available, please check back later.
                             </Typography>
                         </Box>

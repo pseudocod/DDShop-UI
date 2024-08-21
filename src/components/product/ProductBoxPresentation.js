@@ -1,15 +1,12 @@
 import {Box} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React, {useEffect, useState} from "react";
-import {hover} from "@testing-library/user-event/dist/hover";
 import {Link} from "react-router-dom";
 
 export default function ProductBoxPresentation({product}) {
     return (
         <>
             <Box sx={{
-                width: '100%',
-                maxWidth: '550px',
                 backgroundColor: '#F5F4F2',
                 padding: '20px',
                 borderRadius: '2px',
@@ -18,7 +15,7 @@ export default function ProductBoxPresentation({product}) {
                 '&:hover': {
                     backgroundColor: '#151515',
                     '& img': {
-                        opacity: 0,
+                        opacity: 0.1,
                     },
                     '& .product-details': {
                         opacity: 1,
@@ -68,6 +65,22 @@ export default function ProductBoxPresentation({product}) {
                     <Box className='product-name'
                          sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 3}}>
                         <Typography variant='h6' sx={{fontWeight: 600}}>{product.name}</Typography>
+                        {product.availableQuantity === 0 && (
+                            <Box sx={{
+                                position: 'absolute',
+                                top: '10px',
+                                right: '10px',
+                                backgroundColor: 'transparent',
+                                color: '#333',
+                                fontWeight: 700,
+                                padding: '5px 10px',
+                                borderRadius: '5px',
+                                zIndex: 2,
+                                fontSize: '0.9em',
+                            }}>
+                                OUT OF STOCK
+                            </Box>
+                        )}
                         <Typography>&#8364;{product.price}</Typography>
                     </Box>
                 </Link>

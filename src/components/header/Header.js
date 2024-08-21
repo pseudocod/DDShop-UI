@@ -13,11 +13,12 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import {useTheme} from '@mui/material/styles';
 import {ListItemButton} from '@mui/material';
-import {Link} from "react-router-dom";
-import {useContext} from "react";
+import {Link, useLocation} from "react-router-dom";
+import {useContext, useEffect} from "react";
 import {UserContext} from "../../context/UserContext";
 import CartDrawer from "./CartDrawer";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import ProductDetails from "../../pages/ProductDetails";
 
 export default function Header() {
     const [open, setOpen] = React.useState(false);
@@ -25,6 +26,7 @@ export default function Header() {
     const {user} = useContext(UserContext);
     const [openCart, setOpenCart] = React.useState(false);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const location = useLocation();
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -41,6 +43,11 @@ export default function Header() {
     const handleCartClose = () => {
         setOpenCart(false);
     }
+
+    useEffect(() => {
+        setOpen(false);
+        setOpenCart(false);
+    }, [location]);
 
     return (
         <Box>

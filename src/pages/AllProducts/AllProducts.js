@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import {TransitionGroup, CSSTransition} from "react-transition-group";
 import './AllProducts.css';
 import {useTheme} from "@mui/material/styles";
+import Logo from "../../components/logo/Logo";
 
 export default function AllProducts() {
     const [loading, setLoading] = useState(true);
@@ -15,6 +16,7 @@ export default function AllProducts() {
     const [error, setError] = useState(null);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('1');
+    const [sortOption, setSortOption] = useState('default');
     const navigate = useNavigate();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -48,10 +50,26 @@ export default function AllProducts() {
         navigate(`/collections/${categoryName}`);
     }
 
+    const handleSortChange = (e) => {
+        setSortOption(e.target.value);
+    }
+
     const filteredProducts = selectedCategory === '1'
         ? products
         : products.filter(product => product.category.id === parseInt(selectedCategory));
 
+    const sortedAndFilteredProducts = filteredProducts.sort((a, b) => {
+        if (sortOption === 'priceAsc') {
+            return a.price - b.price;
+        }
+        if (sortOption === 'priceDesc') {
+            return b.price - a.price;
+        }
+        if (sortOption === 'dateAsc') {
+            return a.addedDate - b.addedDate;
+        }
+        return a.availableQuantity === 0 ? 1 : -1;
+    })
     const selectedCategoryObject = categories.find(category => category.id === parseInt(selectedCategory));
     const backgroundUrl = selectedCategory === '1'
         ? '/resurseProiect/AllProducts.webp'
@@ -85,12 +103,9 @@ export default function AllProducts() {
                 flexDirection: 'column',
                 justifyContent: 'space-between'
             }}>
-                <Link to="/">
-                    <Typography variant={isMobile ? 'h2' : 'h1'}
-                                sx={{color: '#FFFFFF', paddingTop: isMobile && '80px'}}>
-                        ORICÂND
-                    </Typography>
-                </Link>
+                <Box sx={{width: 'auto'}}>
+                    <Logo logoColor='#F5F4F2'/>
+                </Box>
                 <Box sx={{
                     display: 'flex',
                     paddingRight: isMobile ? '0' : '100px',
@@ -136,6 +151,40 @@ export default function AllProducts() {
                         width: isMobile ? '150px' : '300px',
                         display: 'block'
                     }}/>
+
+                    <FormControl
+                        sx={{backgroundColor: 'transparent', width: isMobile ? '150px' : '300px', marginTop: '10px'}}>
+                        <InputLabel sx={{color: '#FFFFFF'}} variant="standard" htmlFor="uncontrolled-native">
+                            Sort by
+                        </InputLabel>
+                        <NativeSelect
+                            defaultValue={""}
+                            inputProps={{
+                                id: 'sort-native',
+                            }}
+                            sx={{
+                                color: '#FFFFFF',
+                                backgroundColor: 'transparent',
+                                '& .MuiNativeSelect-select:focus': {
+                                    backgroundColor: '#ffffff',
+                                    color: '#151515'
+                                }
+                            }}
+                            onChange={handleSortChange}
+                        >
+                            <option value="default">Default</option>
+                            <option value="priceAsc">Price, low to high</option>
+                            <option value="priceDesc">Price, high to low</option>
+                            <option value="dateAsc">Date, new to old</option>
+
+                        </NativeSelect>
+                    </FormControl>
+                    <Divider sx={{
+                        background: '#ffffff',
+                        height: '0.5px',
+                        width: isMobile ? '150px' : '300px',
+                        display: 'block'
+                    }}/>
                 </Box>
             </Box>
             <Typography sx={{
@@ -144,15 +193,15 @@ export default function AllProducts() {
                 color: '#151515'
             }}>{selectedCategory === '1' ? 'ALL PRODUCTS' : selectedCategoryObject?.name.toUpperCase()}</Typography>
             <Box sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(150px,550px))',
+                justifyContent: 'space-around',
                 padding: 1,
-                gap: '3em',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
+                paddingRight: isMobile ? '0px' : '100px',
+                rowGap: '20px'
             }}>
                 <TransitionGroup component={null}>
-                    {filteredProducts.map(product => (
+                    {sortedAndFilteredProducts.map(product => (
                         <CSSTransition
                             key={product.id}
                             timeout={300}

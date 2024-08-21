@@ -16,6 +16,7 @@ import CartProvider from "./context/CartContext";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import OrderSuccess from "./pages/OrderSuccess";
+import OrderDetails from "./pages/OrderDetails";
 
 
 const createRouter = (user) => {
@@ -36,6 +37,7 @@ const createRouter = (user) => {
                 {path: 'checkout', element: <Checkout/>},
                 {path: '/order-confirmation', element: <OrderConfirmation/>},
                 {path: '/order-success', element: <OrderSuccess/>},
+                {path: '/order/:orderId', element: <OrderDetails/>},
             ],
         },
     ]);

@@ -5,10 +5,36 @@ import {UserContext} from "../context/UserContext";
 import {Link, useNavigate} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PasswordForm from "../components/Address/PasswordForm";
+import axios from "axios";
 
 export default function Account() {
     const {user, setUser} = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+            async function fetchUserOrderData() {
+                try {
+                    setLoading(true);
+                    const response = await axios.get(`http://localhost:8080/orders/user/${user.id}`);
+                    setOrders(response.data);
+                    console.log(response.data);
+                    setError(null);
+                } catch (error) {
+                    setError('Could not fetch user orders.');
+                } finally {
+                    setLoading(false);
+                }
+            }
+
+            fetchUserOrderData();
+        }
+        , []);
+
+
     const handleLogout = () => {
         setUser(null);
         localStorage.removeItem('user');
@@ -24,6 +50,16 @@ export default function Account() {
         }
         return `${address.streetLine}, ${address.postalCode}, ${address.city}, ${address.county}, ${address.country}`;
     }
+
+    const sortedOrders = orders.sort((a, b) => {
+        const dateDifference = new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
+
+        if (dateDifference === 0) {
+            return b.id - a.id;
+        }
+
+        return dateDifference;
+    });
     return (
         <>
             <Box sx={{mb: '50px'}}>
@@ -60,10 +96,42 @@ export default function Account() {
                         <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 1}}>
                             Default Delivery Address: {addressString(user.defaultDeliveryAddress)}
                         </Typography>
-                        <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 1}}>
+                        <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 5}}>
                             Default Billing Address: {addressString(user.defaultBillingAddress)}
                         </Typography>
+                        <Box>
+                            <Typography sx={{fontWeight: 600, fontSize: '1.1rem', mb: 2, textAlign: 'center'}}>ORDER
+                                HISTORY</Typography>
+                            <Box sx={{height: '150px', overflow: 'auto'}}>
+                                {sortedOrders.map((order) => (
+                                    <Box
+                                        key={order.id}
+                                        sx={{
+                                            display: 'grid',
+                                            gridTemplateColumns: 'repeat(3, auto)',
+                                            columnGap: '20px',
+                                            alignItems: 'center',
+                                            mb: 2,
+                                        }}
+                                    >
+                                        <Typography sx={{fontWeight: 500, fontSize: '1rem'}}>
+                                            Order Number: #{order.id}
+                                        </Typography>
+                                        <Typography sx={{fontWeight: 500, fontSize: '1rem'}}>
+                                            Date: {order.orderDate}
+                                        </Typography>
+                                        <Link to={`/order/${order.id}`} state={{order}}
+                                              style={{textDecoration: 'underline'}}>
+                                            <Typography sx={{fontWeight: 500, fontSize: '1rem'}}>
+                                                VIEW ORDER DETAILS
+                                            </Typography>
+                                        </Link>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
                     </Box>
+
                     <Box sx={{display: 'flex', flexDirection: 'column'}}>
                         <Link to="/edit-user">
                             <Button
@@ -142,7 +210,7 @@ export default function Account() {
                                     transform: 'translate(-50%, -50%)',
                                     position: 'absolute'
                                 }}>
-                        ORICÂND
+                        HOME
                     </Typography>
                 </Link>
                 <img
