@@ -1,7 +1,7 @@
 import {Alert, Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
 import {Link, useParams} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
-import axios from "axios";
+import axios, {toFormData} from "axios";
 import Typography from "@mui/material/Typography";
 import QuantityInput from "../components/input/QuantityInput";
 import CheckIcon from '@mui/icons-material/Check';
@@ -10,6 +10,7 @@ import {CartContext} from "../context/CartContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import Logo from "../components/logo/Logo";
+import {useCartDrawer} from "../context/CartDrawerContext";
 
 export default function ProductDetails() {
     const {id} = useParams();
@@ -24,6 +25,7 @@ export default function ProductDetails() {
 
     const {user, setUser} = useContext(UserContext);
     const {addToCart, loading: loadingAddToCart} = useContext(CartContext);
+    const {toggleCartDrawer} = useCartDrawer(); // Get toggleCartDrawer from context
 
     useEffect(() => {
         async function getProduct() {
@@ -78,6 +80,7 @@ export default function ProductDetails() {
         }
         try {
             await addToCart(product.id, quantity);
+            toggleCartDrawer();
         } catch (error) {
             setError('Failed to add product to cart');
             console.error(error);

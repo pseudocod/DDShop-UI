@@ -74,6 +74,14 @@ export default function UserEdit() {
         country: ''
     });
 
+    const isAddressPresent = (address) => {
+        return address.streetLine.trim() !== '' &&
+            address.postalCode.trim() !== '' &&
+            address.city.trim() !== '' &&
+            address.county.trim() !== '' &&
+            address.country.trim() !== '';
+    };
+
     const handleDeliveryAddressChange = (newAddress) => {
         setDeliveryAddress(newAddress)
     };
@@ -97,8 +105,8 @@ export default function UserEdit() {
             firstName: editedUser.firstName,
             lastName: editedUser.lastName,
             phoneNumber: editedUser.phoneNumber,
-            defaultDeliveryAddress: deliveryAddress,
-            defaultBillingAddress: useDeliveryAddress ? deliveryAddress : billingAddress
+            defaultDeliveryAddress: isAddressPresent(deliveryAddress) ? deliveryAddress : user.defaultDeliveryAddress,
+            defaultBillingAddress: useDeliveryAddress ? (isAddressPresent(deliveryAddress) ? deliveryAddress : user.defaultDeliveryAddress) : (isAddressPresent(billingAddress) ? billingAddress : user.defaultBillingAddress)
         }
         try {
             const response = await axios.put('http://localhost:8080/user/update/' + user.id, userData)

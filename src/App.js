@@ -17,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import OrderSuccess from "./pages/OrderSuccess";
 import OrderDetails from "./pages/OrderDetails";
+import {CartDrawerProvider} from "./context/CartDrawerContext";
 
 
 const createRouter = (user) => {
@@ -34,7 +35,7 @@ const createRouter = (user) => {
                 {path: '/collections/all', element: <AllProducts/>},
                 {path: '/collections/:categoryName', element: <AllProducts/>},
                 {path: '/about', element: <About/>},
-                {path: 'checkout', element: <Checkout/>},
+                {path: '/checkout', element: <Checkout/>},
                 {path: '/order-confirmation', element: <OrderConfirmation/>},
                 {path: '/order-success', element: <OrderSuccess/>},
                 {path: '/order/:orderId', element: <OrderDetails/>},
@@ -69,7 +70,9 @@ function App() {
         <ThemeProvider theme={theme}>
             <UserContext.Provider value={{user, setUser}}>
                 <CartProvider>
-                    <RouterProvider router={router}/>
+                    <CartDrawerProvider>
+                        <RouterProvider router={router}/>
+                    </CartDrawerProvider>
                 </CartProvider>
             </UserContext.Provider>
         </ThemeProvider>

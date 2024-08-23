@@ -32,14 +32,14 @@ export default function Collection() {
     }
 
     if (loading) {
-        return <Typography>{loading}</Typography>
+        return <Typography>Loading...</Typography>
     }
     return (
         <>
             <Box sx={{margin: '100px 0', padding: '0 52px'}}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={8}>
-                        <Typography variant={'h4'}>Collections</Typography>
+                        <Typography variant='h4'>Collections</Typography>
                     </Grid>
                     <Grid item xs={1}>
                         <Link to={'/collections/all'} style={{textDecoration: 'underline'}}>View All</Link>
@@ -60,7 +60,7 @@ export default function Collection() {
                             borderRadius: '50%',
                             padding: '12px',
                             fontWeight: 700
-                        }}><ArrowForwardIcon fontSize={'large'}/></Button>
+                        }}><ArrowForwardIcon fontSize='large'/></Button>
                     </Grid>
                 </Grid>
             </Box>

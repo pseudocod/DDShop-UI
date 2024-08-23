@@ -78,7 +78,8 @@ export default function ProductBox() {
                         </Box>
                         <Box sx={{display: 'flex', flexDirection: 'column', marginTop: '10px'}}>
                             {product.attributes.map((attribute) => (
-                                <Box key={attribute.attributeName} sx={{marginBottom: '2px'}}>
+                                <Box key={`${attribute.attributeName}-${attribute.attributeValue}`}
+                                     sx={{marginBottom: '2px'}}>
                                     {attribute.attributeName === 'Size' && (
                                         <Typography variant='body1'>
                                             <strong>{attribute.attributeName}:</strong> {attribute.attributeValue}

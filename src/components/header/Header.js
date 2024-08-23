@@ -18,7 +18,7 @@ import {useContext, useEffect} from "react";
 import {UserContext} from "../../context/UserContext";
 import CartDrawer from "./CartDrawer";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import ProductDetails from "../../pages/ProductDetails";
+import {useCartDrawer} from "../../context/CartDrawerContext";
 
 export default function Header() {
     const [open, setOpen] = React.useState(false);
@@ -27,6 +27,7 @@ export default function Header() {
     const [openCart, setOpenCart] = React.useState(false);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const location = useLocation();
+    const {toggleCartDrawer, closeCartDrawer} = useCartDrawer(); // Get toggleCartDrawer from context
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -36,17 +37,9 @@ export default function Header() {
         setOpen(false);
     };
 
-    const handleCartToggle = () => {
-        setOpenCart(!openCart);
-    }
-
-    const handleCartClose = () => {
-        setOpenCart(false);
-    }
-
     useEffect(() => {
         setOpen(false);
-        setOpenCart(false);
+        closeCartDrawer();
     }, [location]);
 
     return (
@@ -115,7 +108,7 @@ export default function Header() {
                             size="large"
                             aria-label="shopping cart of user"
                             color="inherit"
-                            onClick={handleCartToggle}
+                            onClick={toggleCartDrawer}
                         >
                             <LocalMallOutlinedIcon/>
                         </IconButton>
@@ -143,7 +136,7 @@ export default function Header() {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <CartDrawer theme={theme} open={openCart} handleClose={handleCartClose}/>
+            <CartDrawer theme={theme}/>
             <Drawer
                 variant="temporary"
                 anchor="right"

@@ -60,78 +60,145 @@ export default function Account() {
 
         return dateDifference;
     });
+
+    const isAddressPresent = (address) => {
+        return address.streetLine.trim() !== '' &&
+            address.postalCode.trim() !== '' &&
+            address.city.trim() !== '' &&
+            address.county.trim() !== '' &&
+            address.country.trim() !== '';
+    };
     return (
         <>
-            <Box sx={{mb: '50px'}}>
+            <Box sx={{
+                backgroundImage: `url('/resurseProiect/ACCOUNT.jpg')`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                color: '#FFFFFF',
+                height: '35vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                flexDirection: 'column',
+            }}
+            >
                 <Box sx={{
-                    mt: '30px',
-                    ml: '50px',
+                    position: 'absolute',
+                    left: '50px',
+                    top: '30px'
                 }}>
-                    <Typography variant="h6">Account</Typography>
                     <Box sx={{display: 'flex', cursor: 'pointer', alignItems: 'center'}} onClick={handleLogout}>
                         <PersonOutlineIcon fontSize='large'/>
-                        <Typography sx={{textDecoration: 'underline'}}>Log out</Typography>
+                        <Typography sx={{textDecoration: 'underline'}}>LOG OUT</Typography>
                     </Box>
                 </Box>
                 <Box sx={{
-                    mt: '100px',
-                    ml: '50px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Typography variant='h1' sx={{
+                        fontWeight: 300,
+                        fontSize: '80px',
+                    }}>
+                        ACCOUNT
+                    </Typography>
+                </Box>
+
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                }}
+                >
+                    <Link to="/">
+                        <Typography variant='h1'
+                                    sx={{fontWeight: 500, fontSize: '40px'}}>
+                            HOME
+                        </Typography>
+                    </Link>
+                    {/*<Link to="/edit-user">*/}
+                    {/*    <Typography variant='h1'*/}
+                    {/*                sx={{fontWeight: 500, fontSize: '25px'}}>*/}
+                    {/*        EDIT USER DETAILS*/}
+                    {/*    </Typography>*/}
+                    {/*</Link>*/}
+                </Box>
+            </Box>
+            <Box sx={{mb: '50px'}}>
+                <Box sx={{
+                    mt: '30px',
+                    paddingLeft: '50px',
                     paddingRight: '150px',
                     display: 'flex',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap'
                 }}>
-                    <Box>
-                        <Typography sx={{fontWeight: 600, fontSize: '1.1rem', mb: 2}}>ACCOUNT DETAILS</Typography>
-
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        flexDirection: 'column'
+                    }}>
+                        <Typography sx={{fontWeight: 300, fontSize: '2rem', mb: 2}}>ACCOUNT DETAILS</Typography>
                         <Typography
                             sx={{
-                                fontWeight: 500,
-                                fontSize: '1rem',
+                                fontWeight: 300, fontSize: '1.3rem',
                                 mb: 1
                             }}>Name: {user.firstName} {user.lastName}</Typography>
-                        <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 1}}>Email: {user.email}</Typography>
-                        <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 1}}>Phone
+                        <Typography sx={{fontWeight: 300, fontSize: '1.3rem', mb: 1}}>Email: {user.email}</Typography>
+                        <Typography sx={{fontWeight: 300, fontSize: '1.3rem', mb: 1}}>Phone
                             Number: {user.phoneNumber || 'N/A'}</Typography>
-                        <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 1}}>
-                            Default Delivery Address: {addressString(user.defaultDeliveryAddress)}
+                        <Typography sx={{fontWeight: 300, fontSize: '1.3rem', mb: 1}}>
+                            Default Delivery
+                            Address: {isAddressPresent(user.defaultDeliveryAddress) ? addressString(user.defaultDeliveryAddress) : 'N/A'}
                         </Typography>
-                        <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 5}}>
-                            Default Billing Address: {addressString(user.defaultBillingAddress)}
+                        <Typography sx={{fontWeight: 300, fontSize: '1.3rem', mb: 5}}>
+                            Default Billing
+                            Address: {isAddressPresent(user.defaultBillingAddress) ? addressString(user.defaultBillingAddress) : 'N/A'}
                         </Typography>
-                        <Box>
-                            <Typography sx={{fontWeight: 600, fontSize: '1.1rem', mb: 2, textAlign: 'center'}}>ORDER
-                                HISTORY</Typography>
-                            <Box sx={{height: '150px', overflow: 'auto'}}>
-                                {sortedOrders.map((order) => (
-                                    <Box
-                                        key={order.id}
-                                        sx={{
-                                            display: 'grid',
-                                            gridTemplateColumns: 'repeat(3, auto)',
-                                            columnGap: '20px',
-                                            alignItems: 'center',
-                                            mb: 2,
-                                        }}
-                                    >
-                                        <Typography sx={{fontWeight: 500, fontSize: '1rem'}}>
-                                            Order Number: #{order.id}
-                                        </Typography>
-                                        <Typography sx={{fontWeight: 500, fontSize: '1rem'}}>
-                                            Date: {order.orderDate}
-                                        </Typography>
-                                        <Link to={`/order/${order.id}`} state={{order}}
-                                              style={{textDecoration: 'underline'}}>
-                                            <Typography sx={{fontWeight: 500, fontSize: '1rem'}}>
-                                                VIEW ORDER DETAILS
-                                            </Typography>
-                                        </Link>
-                                    </Box>
-                                ))}
-                            </Box>
-                        </Box>
                     </Box>
 
+                    <Box>
+                        <Typography sx={{fontWeight: 300, fontSize: '2rem', mb: 2}}>ORDER
+                            HISTORY</Typography>
+                        <Box sx={{height: '150px', overflow: 'auto'}}>
+                            {sortedOrders.length > 0 ?
+                                (
+                                    sortedOrders.map((order) => (
+                                        <Box
+                                            key={order.id}
+                                            sx={{
+                                                display: 'grid',
+                                                gridTemplateColumns: 'repeat(3, auto)',
+                                                columnGap: '20px',
+                                                alignItems: 'center',
+                                                mb: 2,
+                                            }}
+                                        >
+                                            <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
+                                                Order Number: #{order.id}
+                                            </Typography>
+                                            <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
+                                                Date: {order.orderDate}
+                                            </Typography>
+                                            <Link to={`/order/${order.id}`} state={{order}}
+                                                  style={{
+                                                      textDecorationLine: 'underline',
+                                                      textDecorationThickness: '1px',
+                                                  }}>
+                                                <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
+                                                    VIEW ORDER DETAILS
+                                                </Typography>
+                                            </Link>
+                                        </Box>
+                                    )))
+                                : <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>No orders found.</Typography>
+                            }
+                        </Box>
+                    </Box>
                     <Box sx={{display: 'flex', flexDirection: 'column'}}>
                         <Link to="/edit-user">
                             <Button
@@ -139,8 +206,8 @@ export default function Account() {
                                 sx={{
                                     mt: 3,
                                     mb: 2,
-                                    fontWeight: 600,
-                                    fontSize: '1.1rem',
+                                    fontWeight: 300,
+                                    fontSize: '2rem',
                                     background: 'none',
                                     border: 'none',
                                     margin: 0,
@@ -148,7 +215,9 @@ export default function Account() {
                                     cursor: 'pointer',
                                     color: '#151515',
                                     boxShadow: 'none',
-                                    textDecoration: 'underline',
+                                    textDecorationLine: 'underline',
+                                    textDecorationThickness: '1px',
+                                    transition: 'all 0.3s',
                                     '&:hover': {
                                         background: 'none',
                                         border: 'none',
@@ -156,7 +225,8 @@ export default function Account() {
                                         boxShadow: 'none',
                                         margin: 0,
                                         padding: 0,
-                                        textDecoration: 'underline',
+                                        textDecorationLine: 'underline',
+                                        textDecorationThickness: '1.5px',
                                     },
                                 }}
                             >
@@ -168,8 +238,8 @@ export default function Account() {
                             sx={{
                                 mt: 3,
                                 mb: 2,
-                                fontWeight: 600,
-                                fontSize: '1.1rem',
+                                fontWeight: 300,
+                                fontSize: '2rem',
                                 background: 'none',
                                 border: 'none',
                                 margin: 0,
@@ -177,7 +247,8 @@ export default function Account() {
                                 cursor: 'pointer',
                                 color: '#151515',
                                 boxShadow: 'none',
-                                textDecoration: 'underline',
+                                textDecorationLine: 'underline',
+                                textDecorationThickness: '1px',
                                 '&:hover': {
                                     background: 'none',
                                     border: 'none',
@@ -185,7 +256,8 @@ export default function Account() {
                                     boxShadow: 'none',
                                     margin: 0,
                                     padding: 0,
-                                    textDecoration: 'underline',
+                                    textDecorationLine: 'underline',
+                                    textDecorationThickness: '1.5px',
                                 },
                             }}
                         >
@@ -196,36 +268,7 @@ export default function Account() {
                     {/*<PasswordForm/>*/}
                 </Box>
             </Box>
-            <Box sx={{backgroundColor: '#151515', height: '60vh', overflow: 'hidden', position: 'relative'}}>
-                <Link to={'/'}>
-                    <Typography variant='h1'
-                                sx={{
-                                    fontWeight: 700,
-                                    zIndex: 1,
-                                    fontSize: '100px',
-                                    color: '#F5F4F2',
-                                    lineHeight: 0.9,
-                                    top: '50%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                    position: 'absolute'
-                                }}>
-                        HOME
-                    </Typography>
-                </Link>
-                <img
-                    src="/resurseProiect/pexels-biasousa-22679426.jpg"
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                    }}
-                />
-            </Box>
+
         </>
     );
 }

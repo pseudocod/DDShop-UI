@@ -1,10 +1,11 @@
 import React, {useContext, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import {Box, Button} from "@mui/material";
+import {Box, Button, CircularProgress} from "@mui/material";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import CartEntryBoxCheckout from "../components/header/CartEntryBoxCheckout";
 import axios from "axios";
 import {CartContext} from "../context/CartContext";
+import CartEntryBoxOrderDetails from "../components/header/CartEntryBoxOrderDetails";
 
 export default function OrderConfirmation() {
     const location = useLocation();
@@ -160,7 +161,7 @@ export default function OrderConfirmation() {
                     {cart.cartEntries.length > 0 ? (
                         cart.cartEntries.map(entry => (
                             <>
-                                <CartEntryBoxCheckout key={entry.id} cartEntry={entry}/>
+                                <CartEntryBoxOrderDetails key={entry.id} cartEntry={entry}/>
                             </>
                         ))
                     ) : (
@@ -169,28 +170,30 @@ export default function OrderConfirmation() {
                 </Box>
                 <Typography variant="h2" sx={{textAlign: 'center'}}>Total Price: &#8364;{cart.totalPrice}</Typography>
                 <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            mt: 3,
-                            mb: 2,
-                            fontWeight: 600,
-                            fontSize: 22,
-                            backgroundColor: '#151515',
-                            color: '#FFFFFF',
-                            boxShadow: 'none',
-                            '&:hover': {
-                                backgroundColor: '#FFFFFF',
-                                color: '#151515',
+                    {loading ? <CircularProgress/> : (
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                mt: 3,
+                                mb: 2,
+                                fontWeight: 600,
+                                fontSize: 22,
+                                backgroundColor: '#151515',
+                                color: '#FFFFFF',
                                 boxShadow: 'none',
-                            },
-                            width: '50%'
-                        }}
-                        onClick={handleSubmit}
-                    >
-                        PLACE ORDER
-                    </Button>
+                                '&:hover': {
+                                    backgroundColor: '#FFFFFF',
+                                    color: '#151515',
+                                    boxShadow: 'none',
+                                },
+                                width: '50%'
+                            }}
+                            onClick={handleSubmit}
+                        >
+                            PLACE ORDER
+                        </Button>
+                    )}
                 </Box>
 
             </Box>

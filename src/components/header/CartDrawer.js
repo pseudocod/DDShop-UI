@@ -11,10 +11,12 @@ import {useContext} from "react";
 import CartEntryBox from "./CartEntryBox";
 import {CartContext} from "../../context/CartContext";
 import {Link} from "react-router-dom";
+import {useCartDrawer} from "../../context/CartDrawerContext";
 
-export default function CartDrawer({open, handleClose, theme}) {
+export default function CartDrawer({theme}) {
     const {user} = useContext(UserContext);
     const {cart, loading, error} = useContext(CartContext);
+    const {open, closeCartDrawer} = useCartDrawer();
 
     if (loading) {
         return (
@@ -39,7 +41,7 @@ export default function CartDrawer({open, handleClose, theme}) {
             variant="temporary"
             anchor="right"
             open={open}
-            onClose={handleClose}
+            onClose={closeCartDrawer}
             sx={{
                 '& .MuiDrawer-paper': {
                     width: '550px',

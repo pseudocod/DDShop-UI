@@ -6,8 +6,12 @@ export const CartContext = createContext();
 
 export default function CartProvider({children}) {
     const {user} = useContext(UserContext);
-    const [cart, setCart] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [cart, setCart] = useState({
+        id: null,
+        totalPrice: 0, // Assuming totalPrice should start at 0
+        cartEntries: [] // Empty array as the default for cart entries
+    });
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -18,6 +22,7 @@ export default function CartProvider({children}) {
 
     const fetchCart = async (cartId) => {
         try {
+            setLoading(true);
             const response = await axios.get(`http://localhost:8080/carts/${cartId}`);
             const sortedEntries = response.data.cartEntries.sort((a, b) => a.id - b.id);
             setCart({...response.data, cartEntries: sortedEntries});

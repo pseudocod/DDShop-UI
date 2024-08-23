@@ -22,6 +22,9 @@ export default function ProductBoxPresentation({product}) {
                     },
                     '& .product-name': {
                         color: '#FFFFFF',
+                    },
+                    '& .out-of-stock': {
+                        color: '#FFFFFF',
                     }
                 },
                 position: 'relative',
@@ -65,8 +68,13 @@ export default function ProductBoxPresentation({product}) {
                     <Box className='product-name'
                          sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 3}}>
                         <Typography variant='h6' sx={{fontWeight: 600}}>{product.name}</Typography>
-                        {product.availableQuantity === 0 && (
-                            <Box sx={{
+                        <Typography>&#8364;{product.price}</Typography>
+                    </Box>
+
+                    {product.availableQuantity === 0 && (
+                        <Box
+                            className='out-of-stock'
+                            sx={{
                                 position: 'absolute',
                                 top: '10px',
                                 right: '10px',
@@ -78,11 +86,9 @@ export default function ProductBoxPresentation({product}) {
                                 zIndex: 2,
                                 fontSize: '0.9em',
                             }}>
-                                OUT OF STOCK
-                            </Box>
-                        )}
-                        <Typography>&#8364;{product.price}</Typography>
-                    </Box>
+                            <Typography>OUT OF STOCK</Typography>
+                        </Box>
+                    )}
                 </Link>
             </Box>
         </>

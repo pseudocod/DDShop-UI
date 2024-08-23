@@ -185,6 +185,15 @@ export default function Checkout() {
         return <Box>LOADING</Box>
     }
 
+    const isAddressPresent = (address) => {
+        return address.streetLine.trim() !== '' &&
+            address.postalCode.trim() !== '' &&
+            address.city.trim() !== '' &&
+            address.county.trim() !== '' &&
+            address.country.trim() !== '';
+    };
+
+
     return (
         <>
             <ThemeProvider theme={editFormTheme}>
@@ -299,10 +308,12 @@ export default function Checkout() {
                                     (
                                         <>
                                             <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 1}}>
-                                                Delivery Address: {addressString(deliveryAddress)}
+                                                Delivery
+                                                Address: {isAddressPresent(deliveryAddress) ? addressString(deliveryAddress) : 'Please add a delivery address.'}
                                             </Typography>
                                             <Typography sx={{fontWeight: 500, fontSize: '1rem', mb: 1}}>
-                                                Billing Address: {addressString(billingAddress)}
+                                                Billing
+                                                Address: {isAddressPresent(billingAddress) ? addressString(billingAddress) : 'Please add a billing address.'}
                                             </Typography>
                                         </>
                                     )
