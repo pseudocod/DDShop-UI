@@ -14,6 +14,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {theme} from "../theme/theme";
 import AddressForm from "../../src/components/Address/AddressForm";
 import axios from "axios";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export const editFormTheme = createTheme({
     ...theme,
@@ -135,47 +136,64 @@ export default function UserEdit() {
         <>
             <ThemeProvider theme={editFormTheme}>
                 <Box sx={{
-                    mt: '30px',
+                    backgroundImage: `url('/resurseProiect/edit--user.jpg')`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    color: '#FFFFFF',
+                    height: '40vh',
                     display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <Link to="/">
-                        <Typography variant='h1' sx={{
-                            fontWeight: 300,
-                            color: '#151515',
-                            fontSize: '80px',
-                            cursor: 'pointer',
-                        }}>
-                            BACK HOME
-                        </Typography>
-                    </Link>
-                </Box>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: '50px',
+                    justifyContent: 'space-around',
+                    flexDirection: 'column',
                 }}
                 >
-                    <Typography variant='h1'
-                                sx={{fontWeight: 500, color: '#151515', fontSize: '16px'}}>
-                        Edit User
-                    </Typography>
-                    <Link to="/account">
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                    }}>
                         <Typography variant='h1'
-                                    sx={{
-                                        fontWeight: 500,
-                                        color: '#151515',
-                                        fontSize: '16px',
-                                        marginBottom: '50px',
-                                        textDecoration: 'underline'
-                                    }}>
-                            Return to Account details
+                                    sx={{fontWeight: 300, color: '#FFFFFF', fontSize: '80px'}}>
+                            EDIT USER
                         </Typography>
-                    </Link>
+
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop: '30px',
+                            gap: '1rem'
+                        }}
+                        >
+                            <Link to="/">
+                                <Typography variant='h1' sx={{
+                                    fontWeight: 300,
+                                    color: '#FFFFFF',
+                                    fontSize: '30px',
+                                    cursor: 'pointer',
+                                }}>
+                                    BACK HOME
+                                </Typography>
+                            </Link>
+                            <Link to="/account">
+                                <Typography variant='h1'
+                                            sx={{
+                                                fontWeight: 200,
+                                                color: '#FFFFFF',
+                                                fontSize: '30px',
+                                                marginBottom: '50px',
+                                            }}>
+                                    Return to Account details
+                                </Typography>
+                            </Link>
+                        </Box>
+                    </Box>
+
                 </Box>
+
 
                 <Box sx={{padding: "20px", paddingRight: '100px'}}>
                     <Box sx={{display: 'flex', gap: 2}}></Box>

@@ -17,7 +17,7 @@ export default function Logo({logoColor}) {
             window.location.reload();
         }
     };
-    
+
     return (
         <Link style={{display: 'inline-block', textAlign: 'center'}} to="/" onClick={handleLogoClick}>
             <Box sx={{
@@ -37,7 +37,7 @@ export default function Logo({logoColor}) {
                     className='logoOricand'
                     variant="h1"
                     sx={{
-                        fontWeight: 200,
+                        fontWeight: 100,
                         color: logoColor,
                         fontSize: isMobile || isLoginRegister ? '3rem' : '6rem',
                         cursor: 'pointer',
@@ -51,7 +51,7 @@ export default function Logo({logoColor}) {
                     variant="h1"
                     className='logoAnytime'
                     sx={{
-                        fontWeight: 200,
+                        fontWeight: 100,
                         color: logoColor,
                         fontSize: isMobile || isLoginRegister ? '3rem' : '6rem',
                         cursor: 'pointer',

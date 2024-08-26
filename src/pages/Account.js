@@ -13,6 +13,7 @@ export default function Account() {
     const [error, setError] = useState(null);
     const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
+    const [openPasswordForm, setOpenPasswordForm] = useState(false);
 
 
     useEffect(() => {
@@ -62,12 +63,19 @@ export default function Account() {
     });
 
     const isAddressPresent = (address) => {
-        return address.streetLine.trim() !== '' &&
-            address.postalCode.trim() !== '' &&
-            address.city.trim() !== '' &&
-            address.county.trim() !== '' &&
-            address.country.trim() !== '';
+        return address?.streetLine?.trim() !== '' &&
+            address?.postalCode?.trim() !== '' &&
+            address?.city?.trim() !== '' &&
+            address?.county.trim() !== '' &&
+            address?.country.trim() !== '';
     };
+
+    const handlePasswordFormButtonOpenClick = () => {
+        setOpenPasswordForm(true);
+    }
+    const handlePasswordFormClose = () => {
+        setOpenPasswordForm(false);
+    }
     return (
         <>
             <Box sx={{
@@ -153,52 +161,15 @@ export default function Account() {
                             Number: {user.phoneNumber || 'N/A'}</Typography>
                         <Typography sx={{fontWeight: 300, fontSize: '1.3rem', mb: 1}}>
                             Default Delivery
-                            Address: {isAddressPresent(user.defaultDeliveryAddress) ? addressString(user.defaultDeliveryAddress) : 'N/A'}
+                            Address: {isAddressPresent(user?.defaultDeliveryAddress) ? addressString(user.defaultDeliveryAddress) : 'N/A'}
                         </Typography>
                         <Typography sx={{fontWeight: 300, fontSize: '1.3rem', mb: 5}}>
                             Default Billing
-                            Address: {isAddressPresent(user.defaultBillingAddress) ? addressString(user.defaultBillingAddress) : 'N/A'}
+                            Address: {isAddressPresent(user?.defaultBillingAddress) ? addressString(user.defaultBillingAddress) : 'N/A'}
                         </Typography>
                     </Box>
 
-                    <Box>
-                        <Typography sx={{fontWeight: 300, fontSize: '2rem', mb: 2}}>ORDER
-                            HISTORY</Typography>
-                        <Box sx={{height: '150px', overflow: 'auto'}}>
-                            {sortedOrders.length > 0 ?
-                                (
-                                    sortedOrders.map((order) => (
-                                        <Box
-                                            key={order.id}
-                                            sx={{
-                                                display: 'grid',
-                                                gridTemplateColumns: 'repeat(3, auto)',
-                                                columnGap: '20px',
-                                                alignItems: 'center',
-                                                mb: 2,
-                                            }}
-                                        >
-                                            <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
-                                                Order Number: #{order.id}
-                                            </Typography>
-                                            <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
-                                                Date: {order.orderDate}
-                                            </Typography>
-                                            <Link to={`/order/${order.id}`} state={{order}}
-                                                  style={{
-                                                      textDecorationLine: 'underline',
-                                                      textDecorationThickness: '1px',
-                                                  }}>
-                                                <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
-                                                    VIEW ORDER DETAILS
-                                                </Typography>
-                                            </Link>
-                                        </Box>
-                                    )))
-                                : <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>No orders found.</Typography>
-                            }
-                        </Box>
-                    </Box>
+
                     <Box sx={{display: 'flex', flexDirection: 'column'}}>
                         <Link to="/edit-user">
                             <Button
@@ -235,6 +206,7 @@ export default function Account() {
                         </Link>
                         <Button
                             variant="text"
+                            onClick={handlePasswordFormButtonOpenClick}
                             sx={{
                                 mt: 3,
                                 mb: 2,
@@ -264,8 +236,50 @@ export default function Account() {
                             CHANGE PASSWORD
                         </Button>
                     </Box>
-
-                    {/*<PasswordForm/>*/}
+                    <PasswordForm open={openPasswordForm} handleClose={handlePasswordFormClose}/>
+                </Box>
+                <Box>
+                    <Typography
+                        sx={{fontWeight: 300, fontSize: '2rem', mb: 2, paddingLeft: '50px', paddingRight: '150px',}}>ORDER
+                        HISTORY</Typography>
+                    <Box sx={{
+                        height: '150px', overflow: 'auto', paddingLeft: '50px',
+                        paddingRight: '150px',
+                    }}>
+                        {sortedOrders.length > 0 ?
+                            (
+                                sortedOrders.map((order) => (
+                                    <Box
+                                        key={order.id}
+                                        sx={{
+                                            display: 'grid',
+                                            maxWidth: '700px',
+                                            gridTemplateColumns: 'repeat(3, auto)',
+                                            columnGap: '20px',
+                                            alignItems: 'center',
+                                            mb: 2,
+                                        }}
+                                    >
+                                        <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
+                                            Order Number: #{order.id}
+                                        </Typography>
+                                        <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
+                                            Date: {order.orderDate}
+                                        </Typography>
+                                        <Link to={`/order/${order.id}`} state={{order}}
+                                              style={{
+                                                  textDecorationLine: 'underline',
+                                                  textDecorationThickness: '1px',
+                                              }}>
+                                            <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>
+                                                VIEW ORDER DETAILS
+                                            </Typography>
+                                        </Link>
+                                    </Box>
+                                )))
+                            : <Typography sx={{fontWeight: 300, fontSize: '1.3rem',}}>No orders found.</Typography>
+                        }
+                    </Box>
                 </Box>
             </Box>
 
