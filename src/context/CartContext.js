@@ -13,6 +13,7 @@ export default function CartProvider({children}) {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [stockError, setStockError] = useState(null);
 
     useEffect(() => {
         if (user && user.userCarts[0].id) {
@@ -51,8 +52,14 @@ export default function CartProvider({children}) {
             const updatedCart = response.data;
             setCart(updatedCart);
             setError(null);
+            setStockError(null);
         } catch (error) {
-            setError('Failed to add product to cart');
+            if (error.response.status === 409) {
+                setStockError('Not enough stock available for the selected quantity.');
+                setError('Not enough stock available for the selected quantity.');
+            } else {
+                setError('Failed to add product to cart');
+            }
             console.error(error);
         } finally {
             setLoading(false);
@@ -66,7 +73,7 @@ export default function CartProvider({children}) {
     }
 
     return (
-        <CartContext.Provider value={{cart, loading, error, addToCart, setCart, clearCart}}>
+        <CartContext.Provider value={{cart, loading, error, addToCart, setCart, clearCart, stockError, setStockError}}>
             {children}
         </CartContext.Provider>
     );

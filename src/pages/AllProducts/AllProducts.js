@@ -1,6 +1,6 @@
-import {Box, CircularProgress, FormControl, InputLabel, NativeSelect, useMediaQuery} from "@mui/material";
+import {Box, Button, CircularProgress, FormControl, InputLabel, NativeSelect, useMediaQuery} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import ProductBoxPresentation from "../../components/product/ProductBoxPresentation";
@@ -22,6 +22,7 @@ export default function AllProducts() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [filters, setFilters] = useState({});
+    const location = useLocation();
 
     useEffect(() => {
         async function fetchData() {
@@ -43,17 +44,45 @@ export default function AllProducts() {
         fetchData();
     }, []);
 
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const sort = params.get('sort') || 'default';
+        setSortOption(sort);
+
+        const categoryParam = params.get('category') || 'all';
+        const selectedCategoryId = categoryParam === 'all' ? '1' : categories.find(c => c.name === categoryParam)?.id.toString();
+        setSelectedCategory(selectedCategoryId);
+
+        const newFilters = {};
+        params.forEach((value, key) => {
+            if (key.startsWith('filter_')) {
+                const attributeName = key.replace('filter_', '');
+                newFilters[attributeName] = value.split(',');
+            }
+        });
+        setFilters(newFilters);
+    }, [categories, location.search]);
+
     function handleChange(e) {
         const selectedCategoryId = e.target.value;
         setSelectedCategory(selectedCategoryId);
+
         const categoryName = selectedCategoryId === '1'
             ? 'all'
             : categories.find(category => category.id === parseInt(selectedCategoryId))?.name;
-        navigate(`/collections/${categoryName}`);
+
+        const params = new URLSearchParams(location.search);
+        params.set('category', categoryName);
+
+        navigate(`/collections/${categoryName}?${params.toString()}`);
     }
 
     const handleSortChange = (e) => {
         setSortOption(e.target.value);
+        const params = new URLSearchParams(location.search);
+        params.set('sort', e.target.value);
+        navigate(`${location.pathname}?${params.toString()}`);
     }
 
     const filteredProducts = selectedCategory === '1'
@@ -85,7 +114,6 @@ export default function AllProducts() {
             }
         });
     });
-    console.log(sortedAndAdvancedFilteredProducts);
 
     const selectedCategoryObject = categories.find(category => category.id === parseInt(selectedCategory));
     const backgroundUrl = selectedCategory === '1'
@@ -108,6 +136,7 @@ export default function AllProducts() {
         );
     }
     console.log(filters);
+    console.log(selectedCategory);
     return (
         <Box sx={{backgroundColor: '#F9F9F9', width: '100%'}}>
             <Box sx={{
@@ -154,7 +183,7 @@ export default function AllProducts() {
                                 Filter by Category
                             </InputLabel>
                             <NativeSelect
-                                defaultValue={selectedCategory}
+                                value={selectedCategory}
                                 inputProps={{
                                     category: 'category',
                                     id: 'uncontrolled-native',
@@ -192,7 +221,7 @@ export default function AllProducts() {
                                 Sort by
                             </InputLabel>
                             <NativeSelect
-                                defaultValue={""}
+                                value={sortOption}
                                 inputProps={{
                                     id: 'sort-native',
                                 }}
@@ -229,43 +258,33 @@ export default function AllProducts() {
                 color: '#151515'
             }}>{selectedCategory === '1' ? 'ALL PRODUCTS' : selectedCategoryObject?.name.toUpperCase()}
             </Typography>
-
-            <Box sx={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(150px,550px))',
-                justifyContent: 'space-around',
-                padding: 1,
-                paddingRight: isMobile ? '0px' : '100px',
-                rowGap: '20px'
-            }}>
-                <TransitionGroup component={null}>
-                    {sortedAndAdvancedFilteredProducts.length > 0 ? (
-                            sortedAndAdvancedFilteredProducts.map(product => (
-                                <CSSTransition
-                                    key={product.id}
-                                    timeout={300}
-                                    classNames="fade"
-                                >
-                                    <ProductBoxPresentation key={product.id} product={product}/>
-                                </CSSTransition>
-                            ))
-                        ) :
-                        <Box sx={{
-                            display: 'flex',
-                            justifyContent: 'flex-start'
-                        }}>
-                            <Typography sx={{
-                                fontSize: isMobile ? '2em' : '3em',
-                                fontWeight: 300,
-                                color: '#151515',
-                                whiteSpace: 'nowrap'
-                            }}>
-                                NO PRODUCTS FOUND.
-                            </Typography>
-                        </Box>
-                    }
-                </TransitionGroup>
-            </Box>
+            {loading && <CircularProgress color={'inherit'}/>}
+            {sortedAndAdvancedFilteredProducts.length === 0 ? (
+                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem'}}>
+                    <Typography variant='h4'>No products found. Please adjust your filters.</Typography>
+                </Box>
+            ) : (
+                <Box sx={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(150px,550px))',
+                    justifyContent: 'space-around',
+                    padding: 1,
+                    paddingRight: isMobile ? '0px' : '100px',
+                    rowGap: '20px'
+                }}>
+                    <TransitionGroup component={null}>
+                        {sortedAndAdvancedFilteredProducts.map(product => (
+                            <CSSTransition
+                                key={product.id}
+                                timeout={300}
+                                classNames="fade"
+                            >
+                                <ProductBoxPresentation product={product}/>
+                            </CSSTransition>
+                        ))}
+                    </TransitionGroup>
+                </Box>
+            )}
         </Box>
     );
 }

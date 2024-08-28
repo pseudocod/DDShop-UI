@@ -4,6 +4,17 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 
 export default function ProductBoxPresentation({product}) {
+
+    const groupedAttributes = product.attributes.reduce((acc, attribute) => {
+        const {attributeName, attributeValue} = attribute;
+
+        if (!acc[attributeName]) {
+            acc[attributeName] = [];
+        }
+        acc[attributeName].push(attributeValue);
+        return acc;
+    }, {});
+
     return (
         <>
             <Box sx={{
@@ -44,10 +55,10 @@ export default function ProductBoxPresentation({product}) {
                             <Typography variant='h1'>{product.category.name}</Typography>
                         </Box>
                         <Box>
-                            {product.attributes.map((attribute, index) => {
+                            {Object.entries(groupedAttributes).map(([attributeName, attributeValues], index) => {
                                 return (
                                     <Typography key={index}>
-                                        {attribute.attributeName + ': ' + attribute.attributeValue}
+                                        {attributeName + ': ' + attributeValues.join(', ')}
                                     </Typography>
                                 )
                             })}

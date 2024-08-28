@@ -37,65 +37,64 @@ export default function ProductBox() {
     }
 
     return (
-        <Box sx={{
-            display: 'flex',
-            color: '#F5F4F2',
-            width: '100%',
-            flexWrap: 'wrap',
-            alignItems: 'stretch',
-        }}>
+        <>
             {!isMobile &&
                 <Box sx={{
-                    border: '1px solid #F5F4F2',
-                    borderRadius: '8px',
                     textAlign: 'center',
                     flex: '1 0 300px',
                     padding: '16px',
+                    color: '#F5F4F2',
                 }}>
-                    <Typography sx={{fontSize: '2rem', fontWeight: 500}}>
-                        New Arrivals, Anytime, Anywhere
+                    <Typography sx={{fontSize: '7rem', fontWeight: 700}}>
+                        NEW ARRIVALS
                     </Typography>
                 </Box>
             }
-            {products.map((product) => (
-                <Box key={product.id} sx={{
-                    border: '1px solid #F5F4F2',
-                    borderRadius: '10px',
-                    flex: '1 0 300px',
-                    cursor: 'pointer',
-                    padding: '5px',
-                    transition: '0.3s',
-                    '&:hover': {
-                        backgroundColor: '#FFFFFF',
-                        color: '#151515',
-                        boxShadow: 'none',
-                    },
-                }}>
-                    <Link key={product.id} to={`/products/${product.id}`} sx={{width: '100%'}}>
-                        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                            <Typography variant='h5' sx={{fontWeight: 600}}>{product.name}</Typography>
-                            <Typography variant='h6'>&#8364;{product.price.toFixed(2)}</Typography>
-                        </Box>
-                        <Box sx={{display: 'flex', flexDirection: 'column', marginTop: '10px'}}>
-                            {product.attributes.map((attribute) => (
-                                <Box key={`${attribute.attributeName}-${attribute.attributeValue}`}
-                                     sx={{marginBottom: '2px'}}>
-                                    {attribute.attributeName === 'Size' && (
-                                        <Typography variant='body1'>
-                                            <strong>{attribute.attributeName}:</strong> {attribute.attributeValue}
-                                        </Typography>
-                                    )}
-                                    {attribute.attributeName === 'Origin' && (
-                                        <Typography variant='body1'>
-                                            <strong>{attribute.attributeName}:</strong> {attribute.attributeValue}
-                                        </Typography>
-                                    )}
-                                </Box>
-                            ))}
-                        </Box>
-                    </Link>
-                </Box>
-            ))}
-        </Box>
+            <Box sx={{
+                display: 'flex',
+                color: '#F5F4F2',
+                width: '100%',
+                flexWrap: 'wrap',
+                alignItems: 'stretch',
+                gap: '20px'
+            }}>
+                {products.map((product) => (
+                    <Box key={product.id} sx={{
+                        border: '0.3px solid #F5F4F2',
+                        borderRadius: '2px',
+                        flex: '1 0 300px',
+                        cursor: 'pointer',
+                        padding: '5px',
+                        transition: '0.3s',
+                        '&:hover': {
+                            backgroundColor: '#FFFFFF',
+                            color: '#151515',
+                            boxShadow: 'none',
+                        },
+                    }}>
+                        <Link key={product.id} to={`/products/${product.id}`} sx={{width: '100%'}}>
+                            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                                <Typography variant='h4'
+                                            sx={{fontWeight: 300}}>{product.name.toUpperCase()}</Typography>
+                                <Typography variant='h6'>&#8364;{product.price.toFixed(2)}</Typography>
+                            </Box>
+                            <Box sx={{display: 'flex', flexDirection: 'column', marginTop: '10px'}}>
+                                {product.attributes.map((attribute) => (
+                                    <Box key={`${attribute.attributeName}-${attribute.attributeValue}`}
+                                         sx={{marginBottom: '2px'}}>
+                                        {attribute.attributeName === 'Size' && (
+                                            <Typography sx={{fontWeight: 200}} variant='h5'>
+                                                {attribute.attributeName}: {attribute.attributeValue}
+                                            </Typography>
+                                        )}
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Link>
+                    </Box>
+                ))}
+            </Box>
+        </>
+
     );
 }

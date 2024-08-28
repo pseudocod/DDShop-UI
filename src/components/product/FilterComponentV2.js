@@ -4,6 +4,7 @@ import {Box, Button, Checkbox, FormControl, ListItemText, MenuItem, Modal, Selec
 import Typography from "@mui/material/Typography";
 import {CheckBox} from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
+import {useLocation, useNavigate} from "react-router-dom";
 
 export default function FilterComponentV2({filters, setFilters}) {
     const [loading, setLoading] = useState(false);
@@ -16,7 +17,8 @@ export default function FilterComponentV2({filters, setFilters}) {
 
     const [uniqueAttributes, setUniqueAttributes] = useState([]);
     const [selectedFilters, setSelectedFilters] = useState({});
-
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,6 +54,20 @@ export default function FilterComponentV2({filters, setFilters}) {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const newSelectedFilters = {};
+
+        params.forEach((value, key) => {
+            if (key.startsWith('filter_')) {
+                const attributeName = key.replace('filter_', '');
+                newSelectedFilters[attributeName] = value.split(',');
+            }
+        });
+
+        setSelectedFilters(newSelectedFilters);
+    }, [location.search]);
+
     const handleButtonClick = () => {
         setOpenModal(true);
     }
@@ -61,11 +77,28 @@ export default function FilterComponentV2({filters, setFilters}) {
     const handleApplyFilters = () => {
         setFilters(selectedFilters);
         setOpenModal(false);
+
+        const params = new URLSearchParams(location.search);
+
+        Object.entries(selectedFilters).forEach(([key, values]) => {
+            params.set(`filter_${key}`, values.join(','));
+        });
+
+        navigate(`${location.pathname}?${params.toString()}`);
     };
 
     const handleResetFilters = () => {
+
+        const params = new URLSearchParams(location.search);
+
+        Object.keys(selectedFilters).forEach(key => {
+            params.delete(`filter_${key}`);
+        });
+
         setSelectedFilters({});
         setFilters({});
+
+        navigate(`${location.pathname}?${params.toString()}`);
     }
     const handleDropdownChange = (attributeName, event) => {
         if (event.target.value.length === 0) {

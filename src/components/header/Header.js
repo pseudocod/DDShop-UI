@@ -12,22 +12,24 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import {useTheme} from '@mui/material/styles';
-import {ListItemButton} from '@mui/material';
+import {CircularProgress, ListItemButton} from '@mui/material';
 import {Link, useLocation} from "react-router-dom";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../context/UserContext";
 import CartDrawer from "./CartDrawer";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useCartDrawer} from "../../context/CartDrawerContext";
+import {CartContext} from "../../context/CartContext";
 
 export default function Header() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const theme = useTheme();
     const {user} = useContext(UserContext);
-    const [openCart, setOpenCart] = React.useState(false);
+    const [openCart, setOpenCart] = useState(false);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const location = useLocation();
-    const {toggleCartDrawer, closeCartDrawer} = useCartDrawer(); // Get toggleCartDrawer from context
+    const {toggleCartDrawer, closeCartDrawer} = useCartDrawer();
+    const {cart, loading: loadingCart, error: errorCart} = useContext(CartContext);
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -42,12 +44,16 @@ export default function Header() {
         closeCartDrawer();
     }, [location]);
 
+    let cartQuantity = cart.cartEntries.reduce((accumulator, cartEntry) => (accumulator + cartEntry.quantity), 0);
+    if (!user) {
+        cartQuantity = 0;
+    }
     return (
         <Box>
             <AppBar
                 position="fixed"
                 sx={{
-                    width: isMobile ? '100%' : '90px', // Full width on mobile, fixed width on larger screens
+                    width: isMobile ? '100%' : '90px',
                     backgroundColor: '#FFFFFF',
                     color: '#151515',
                     boxShadow: 'none',
@@ -109,8 +115,30 @@ export default function Header() {
                             aria-label="shopping cart of user"
                             color="inherit"
                             onClick={toggleCartDrawer}
+                            sx={{position: 'relative'}}
                         >
                             <LocalMallOutlinedIcon/>
+                            {loadingCart && <CircularProgress color="inherit"/>}
+                            {cart.cartEntries.length > 0 && (
+                                <Box
+                                    sx={{
+                                        backgroundColor: 'yellow',
+                                        borderRadius: '50%',
+                                        width: '20px',
+                                        height: '20px',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        position: 'absolute',
+                                        top: '0',
+                                        right: '0'
+                                    }}
+                                >
+                                    <Typography>{cartQuantity}</Typography>
+                                </Box>
+
+                            )
+                            }
                         </IconButton>
                         <Link to={user ? "/account" : "/login"}>
                             <IconButton

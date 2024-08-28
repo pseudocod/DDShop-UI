@@ -8,12 +8,11 @@ import {CartContext} from "../../context/CartContext";
 import CloseIcon from '@mui/icons-material/Close';
 import debounce from 'lodash/debounce'
 
-export default function CartEntryBox({cartEntry}) {
+export default function CartEntryBox({cartEntry, error, setError}) {
     console.log(cartEntry);
     const product = cartEntry.product;
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const {cart, loading: loadingCart, error: errorCart, setCart} = useContext(CartContext);
+    const {cart, loading: loadingCart, error: errorCart, setCart, stockError, setStockError} = useContext(CartContext);
     const [quantity, setQuantity] = useState(cartEntry.quantity);
 
     useEffect(() => {
@@ -39,8 +38,17 @@ export default function CartEntryBox({cartEntry}) {
             console.log('Updated quantity to:', quantity);
             console.log('Cart:', cart);
             setError(null);
+            setStockError(null);
         } catch (error) {
-            setError('Failed to update quantity');
+            if (error.response) {
+                if (error.response.status === 409) {
+                    setError('Not enough stock available for the selected quantity.');
+                } else {
+                    setError('Failed to update quantity');
+                }
+            } else {
+                setError('An unexpected error occurred.');
+            }
             console.error(error);
         } finally {
             setLoading(false);
@@ -71,9 +79,6 @@ export default function CartEntryBox({cartEntry}) {
         )
     }
 
-    if (errorCart) {
-        return null;
-    }
 
     const handleCartEntryDelete = async (event) => {
         try {
@@ -98,10 +103,6 @@ export default function CartEntryBox({cartEntry}) {
                 </Typography>
             </Box>
         )
-    }
-
-    if (error) {
-        return null;
     }
 
     return (
@@ -140,9 +141,15 @@ export default function CartEntryBox({cartEntry}) {
                             min={1}
                             max={20}
                             sx={{textAlign: 'center', width: '60px'}}
+                            error={!!error}
                             onChange={handleInputChange}
                         />
                     </Box>
+                    {error && (
+                        <Typography sx={{color: 'red', mb: 1, mt: 1, fontSize: '14px'}}>
+                            {error}
+                        </Typography>
+                    )}
                     <Typography variant="body1" sx={{fontWeight: 500}}>
                         Price: &#8364;{cartEntry.totalPriceEntry.toFixed(2)}
                     </Typography>

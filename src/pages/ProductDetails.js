@@ -1,4 +1,14 @@
-import {Alert, Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Select
+} from "@mui/material";
 import {Link, useParams} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import axios, {toFormData} from "axios";
@@ -24,8 +34,8 @@ export default function ProductDetails() {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const {user, setUser} = useContext(UserContext);
-    const {addToCart, loading: loadingAddToCart} = useContext(CartContext);
-    const {toggleCartDrawer} = useCartDrawer(); // Get toggleCartDrawer from context
+    const {addToCart, loading: loadingAddToCart, error: errorCart, stockError} = useContext(CartContext);
+    const {toggleCartDrawer} = useCartDrawer();
 
     useEffect(() => {
         async function getProduct() {
@@ -88,6 +98,16 @@ export default function ProductDetails() {
     }
 
     if (loading || loadingAddToCart) return <Box>Loading...</Box>;
+
+    const groupedAttributes = product.attributes.reduce((acc, attribute) => {
+        const {attributeName, attributeValue} = attribute;
+
+        if (!acc[attributeName]) {
+            acc[attributeName] = [];
+        }
+        acc[attributeName].push(attributeValue);
+        return acc;
+    }, {});
 
     return (
         <>
@@ -173,12 +193,14 @@ export default function ProductDetails() {
                                     },
                                 }}
                                 onClick={handleAddToCart}
-                                disabled={loading}
+                                disabled={loading, user === null}
                             >
-                                {loading ? 'ADDING...' : 'ADD TO CART'}
+                                {loading ? <CircularProgress color="inherit"/> : 'ADD TO CART'}
                             </Button>
+                            {!user &&  <Link style={{display:'inline-block', marginBottom:'20px'}} to='/login'><Typography variant={'h4'}>Please log in or register to add to cart.</Typography></Link>}
+
                         </>)}
-                    {error && <Alert severity="error">{error}</Alert>}
+                    {stockError && <Alert sx={{mb: '30px', fontSize: '1.5rem'}} severity="error">{stockError}</Alert>}
                     <Box sx={{mb: 10}}>
                         <Typography variant='body2'
                                     sx={{
@@ -220,30 +242,66 @@ export default function ProductDetails() {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <Box sx={{
-                    backgroundColor: '#FFFFFF',
-                    padding: '20px',
-                    borderRadius: '5px'
-
-                }}>
-                    <Typography variant='h1' sx={{
-                        fontWeight: 700,
-                        color: '#151515',
-                        fontSize: '30px',
-                    }}>
-                        MORE PRODUCT DETAILS
+                <Box
+                    sx={{
+                        backgroundColor: '#FFFFFF',
+                        padding: '30px',
+                        borderRadius: '10px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        maxWidth: '800px',
+                        margin: '0 auto',
+                    }}
+                >
+                    <Typography
+                        variant='h2'
+                        sx={{
+                            fontWeight: 600,
+                            color: '#151515',
+                            fontSize: '36px',
+                            textAlign: 'center',
+                            marginBottom: '20px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1.5px',
+                        }}
+                    >
+                        More Product Details
                     </Typography>
                     <Box sx={{mt: 2}}>
-                        <Typography sx={{mb: 2}}>
-                            <b>{product.name}</b>
+                        <Typography
+                            variant='h5'
+                            sx={{
+                                mb: 3,
+                                fontWeight: 500,
+                                color: '#333333',
+                                textAlign: 'center',
+                            }}
+                        >
+                            {product.name}
                         </Typography>
-                        {product.attributes.map((attribute, index) =>
-                            <Typography key={index}>
-                                <b>{attribute.attributeName}</b>:&nbsp;{attribute.attributeValue}
-                            </Typography>
-                        )}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '12px',
+                                paddingLeft: '20px',
+                            }}
+                        >
+                            {Object.entries(groupedAttributes).map(([attributeName, attributeValues], index) => (
+                                <Typography
+                                    variant='body1'
+                                    key={index}
+                                    sx={{
+                                        color: '#555555',
+                                        fontWeight: 400,
+                                    }}
+                                >
+                                    <b style={{fontWeight: 600}}>{attributeName}</b>: {attributeValues.join(', ')}
+                                </Typography>
+                            ))}
+                        </Box>
                     </Box>
                 </Box>
+
             </Box>
         </>
     )

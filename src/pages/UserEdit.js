@@ -15,6 +15,7 @@ import {theme} from "../theme/theme";
 import AddressForm from "../../src/components/Address/AddressForm";
 import axios from "axios";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import Logo from "../components/logo/Logo";
 
 export const editFormTheme = createTheme({
     ...theme,
@@ -24,20 +25,20 @@ export const editFormTheme = createTheme({
                 root: {
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                            borderColor: 'transparent', // Default border color
+                            borderColor: '#151515',
                         },
                         '&:hover fieldset': {
-                            borderColor: 'transparent', // Hovered border color
+                            borderColor: 'transparent',
                         },
                         '&.Mui-focused fieldset': {
-                            borderColor: '#151515', // Border color when focused
+                            borderColor: '#151515',
                         },
                     },
                     '& .MuiInputLabel-root': {
-                        color: 'gray', // Default label color
+                        color: 'gray',
                     },
                     '& .MuiInputLabel-root.Mui-focused': {
-                        color: 'gray', // Label color when focused
+                        color: 'gray',
                     },
                 },
             },
@@ -136,98 +137,64 @@ export default function UserEdit() {
         <>
             <ThemeProvider theme={editFormTheme}>
                 <Box sx={{
-                    backgroundImage: `url('/resurseProiect/edit--user.jpg')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    color: '#FFFFFF',
                     height: '40vh',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-around',
+                    justifyContent: 'center',
                     flexDirection: 'column',
+                    gap: '20px'
                 }}
                 >
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                    }}>
-                        <Typography variant='h1'
-                                    sx={{fontWeight: 300, color: '#FFFFFF', fontSize: '80px'}}>
-                            EDIT USER
+                    <Typography variant='h1'
+                                sx={{fontWeight: 100, color: '#151515', fontSize: '80px'}}>
+                        EDIT USER
+                    </Typography>
+                    <Link to="/">
+                        <Typography variant='h1' sx={{
+                            fontWeight: 300,
+                            color: '#151515',
+                            fontSize: '30px',
+                            cursor: 'pointer',
+                        }}>
+                            BACK HOME
                         </Typography>
-
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: '30px',
-                            gap: '1rem'
-                        }}
-                        >
-                            <Link to="/">
-                                <Typography variant='h1' sx={{
-                                    fontWeight: 300,
-                                    color: '#FFFFFF',
-                                    fontSize: '30px',
-                                    cursor: 'pointer',
-                                }}>
-                                    BACK HOME
-                                </Typography>
-                            </Link>
-                            <Link to="/account">
-                                <Typography variant='h1'
-                                            sx={{
-                                                fontWeight: 200,
-                                                color: '#FFFFFF',
-                                                fontSize: '30px',
-                                                marginBottom: '50px',
-                                            }}>
-                                    Return to Account details
-                                </Typography>
-                            </Link>
-                        </Box>
-                    </Box>
-
+                    </Link>
                 </Box>
 
 
-                <Box sx={{padding: "20px", paddingRight: '100px'}}>
-                    <Box sx={{display: 'flex', gap: 2}}></Box>
-                    <TextField margin="normal"
-                               required
-                               id="firstName"
-                               label="First name"
-                               name="firstName"
-                               autoComplete="name"
-                               value={editedUser.firstName}
-                               sx={{
-                                   color: '#151515',
-                                   backgroundColor: '#F5F4F2',
-                                   borderRadius: '10px',
-                                   width: '50%'
-                               }}
-                               onChange={handleUserChange}
-                    />
-                    <TextField margin="normal"
-                               required
-                               id="lastName"
-                               label="Last name"
-                               name="lastName"
-                               value={editedUser.lastName}
-                               autoComplete="family-name"
-                               sx={{
-                                   color: '#151515',
-                                   backgroundColor: '#F5F4F2',
-                                   borderRadius: '10px',
-                                   width: '50%'
-                               }}
-                               onChange={handleUserChange}
-                    />
-                    <Box sx={{display: 'block'}}>
+                <Box sx={{padding: "0 20px", paddingRight: '100px'}}>
+                    <Box
+                        sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <TextField margin="normal"
+                                   required
+                                   id="firstName"
+                                   label="First name"
+                                   name="firstName"
+                                   autoComplete="name"
+                                   value={editedUser.firstName}
+                                   sx={{
+                                       color: '#151515',
+                                       backgroundColor: '#F5F4F2',
+                                       borderRadius: '10px',
+                                       width: '30%'
+                                   }}
+                                   onChange={handleUserChange}
+                        />
+                        <TextField margin="normal"
+                                   required
+                                   id="lastName"
+                                   label="Last name"
+                                   name="lastName"
+                                   value={editedUser.lastName}
+                                   autoComplete="family-name"
+                                   sx={{
+                                       color: '#151515',
+                                       backgroundColor: '#F5F4F2',
+                                       borderRadius: '10px',
+                                       width: '30%'
+                                   }}
+                                   onChange={handleUserChange}
+                        />
                         <TextField margin="normal"
                                    required
                                    id="phoneNumber"
@@ -239,53 +206,18 @@ export default function UserEdit() {
                                        color: '#151515',
                                        backgroundColor: '#F5F4F2',
                                        borderRadius: '10px',
-                                       width: '50%'
+                                       width: '30%'
                                    }}
                                    onChange={handleUserChange}
                         />
-                    </Box>
-                    <Button
-                        onClick={handleOpen}
-                        variant="contained"
-                        sx={{
-                            mt: 3,
-                            mb: 2,
-                            fontWeight: 500,
-                            fontSize: '16px',
-                            backgroundColor: '#2c2c2c',
-                            color: '#F5F4F2',
-                            boxShadow: 'none',
-                            '&:hover': {
-                                backgroundColor: '#F5F4F2',
-                                color: '#2c2c2c',
-                                boxShadow: 'none',
-                            },
-                        }}
-                    >
-                        Edit Delivery Address
-                    </Button>
-
-                    <AddressForm open={open} handleModalClose={handleClose}
-                                 handleAddressSave={handleDeliveryAddressChange}
-                                 formType="delivery"
-                    />
-
-                    <Box sx={{display: 'block'}}>
-                        <FormControlLabel
-                            control={<Checkbox checked={useDeliveryAddress} onChange={handleCheckboxChange}/>}
-                            label='Use delivery address as billing address'
-                        />
-                    </Box>
-
-                    {!useDeliveryAddress && (
                         <Button
-                            onClick={handleBillingModalOpen}
+                            onClick={handleOpen}
                             variant="contained"
                             sx={{
                                 mt: 3,
                                 mb: 2,
                                 fontWeight: 500,
-                                fontSize: '16px',
+                                fontSize: '20px',
                                 backgroundColor: '#2c2c2c',
                                 color: '#F5F4F2',
                                 boxShadow: 'none',
@@ -296,16 +228,51 @@ export default function UserEdit() {
                                 },
                             }}
                         >
-                            Edit Billing Address
+                            Edit Delivery Address
                         </Button>
-                    )}
 
-                    <AddressForm open={openBillingModal} handleModalClose={handleBillingModalClose}
-                                 handleAddressSave={handleBillingAddressChange}
-                                 formType="billing"
-                    />
-                    {error && <Typography color="error">{error}</Typography>}
-                    {loading && <Typography>Loading...</Typography>}
+                        <AddressForm open={open} handleModalClose={handleClose}
+                                     handleAddressSave={handleDeliveryAddressChange}
+                                     formType="delivery"
+                        />
+
+                        <Box sx={{display: 'block'}}>
+                            <FormControlLabel
+                                control={<Checkbox checked={useDeliveryAddress} onChange={handleCheckboxChange}/>}
+                                label='Use delivery address as billing address'
+                            />
+                        </Box>
+
+                        {!useDeliveryAddress && (
+                            <Button
+                                onClick={handleBillingModalOpen}
+                                variant="contained"
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    fontWeight: 500,
+                                    fontSize: '20px',
+                                    backgroundColor: '#2c2c2c',
+                                    color: '#F5F4F2',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        backgroundColor: '#F5F4F2',
+                                        color: '#2c2c2c',
+                                        boxShadow: 'none',
+                                    },
+                                }}
+                            >
+                                Edit Billing Address
+                            </Button>
+                        )}
+
+                        <AddressForm open={openBillingModal} handleModalClose={handleBillingModalClose}
+                                     handleAddressSave={handleBillingAddressChange}
+                                     formType="billing"
+                        />
+                        {error && <Typography color="error">{error}</Typography>}
+                        {loading && <Typography>Loading...</Typography>}
+                    </Box>
                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                         <Button
                             type="submit"
@@ -314,17 +281,18 @@ export default function UserEdit() {
                                 mt: 3,
                                 mb: 2,
                                 fontWeight: 500,
-                                fontSize: '16px',
+                                fontSize: '32px',
                                 backgroundColor: '#2c2c2c',
                                 color: '#F5F4F2',
                                 boxShadow: 'none',
+                                padding: '2px 10px',
                                 '&:hover': {
                                     backgroundColor: '#F5F4F2',
                                     color: '#2c2c2c',
                                     boxShadow: 'none',
                                 },
-                                width: '10%',
-                                display: 'block'
+                                width: '30%',
+                                display: 'inline-block'
                             }}
                             onClick={handleSubmit}
                         >
