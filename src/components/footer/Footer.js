@@ -1,6 +1,5 @@
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
-import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 
 export default function Footer() {
@@ -35,10 +34,11 @@ export default function Footer() {
 
     return (
         <>
-            <Box sx={{backgroundColor: '#151515', color: '#ffffff', padding: '20px 50px'}}>
+            <Box sx={{backgroundColor: '#151515', color: '#ffffff', padding: '20px 10%'}}>
                 <Box sx={{
                     display: 'flex',
-                    justifyContent: 'space-around',
+                    justifyContent: 'space-between',
+                    flexDirection: {xs: 'column', md: 'column', lg: 'row'}, // Change here
                     padding: '20px 0',
                     alignItems: 'center',
                 }}>
@@ -47,64 +47,68 @@ export default function Footer() {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        gap: '150px'
+                        gap: {xs: '50px', md: '50px', lg: '150px'} // Use different gaps for lg
                     }}>
-                        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '50px'}}>
-                            <Typography sx={{
-                                fontSize: '2rem',
-                                borderBottom: '2px solid white',
-                                paddingBottom: '2px',
-                                transition: 'all 0.5s',
-                                '&:hover': {
-                                    borderBottom: '2px solid #A5C5E9',
-                                },
-                                cursor: 'pointer'
-                            }} variant='body1'>
-                                <Link to='/products' style={{textDecoration: 'none', color: 'inherit'}}>Products</Link>
-                            </Typography>
-                            <Typography sx={{
-                                fontSize: '2rem',
-                                borderBottom: '2px solid white',
-                                paddingBottom: '2px',
-                                transition: 'all 0.5s',
-                                '&:hover': {
-                                    borderBottom: '2px solid #A5C5E9',
-                                },
-                                cursor: 'pointer'
-                            }} variant='body1'>
-                                <Link to='/account' style={{textDecoration: 'none', color: 'inherit'}}>Account</Link>
-                            </Typography>
-                            <Typography sx={{
-                                fontSize: '2rem',
-                                borderBottom: '2px solid white',
-                                paddingBottom: '2px',
-                                transition: 'all 0.5s',
-                                '&:hover': {
-                                    borderBottom: '2px solid #A5C5E9',
-                                },
-                                cursor: 'pointer'
-                            }} variant='body1'>
-                                <Link to='/about' style={{textDecoration: 'none', color: 'inherit'}}>About</Link>
-                            </Typography>
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: {xs: 'column', md: 'column', lg: 'row'}, // Use column for xs and md
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: {xs: '20px', md: '20px', lg: '50px'} // Adjust gap for lg
+                        }}>
+                            {['Products', 'Account', 'About'].map((text) => (
+                                <Typography key={text} sx={{
+                                    fontSize: {xs: '1.5rem', md: '1.5rem', lg: '2rem'}, // Size for xs and md is the same, lg is bigger
+                                    borderBottom: '2px solid white',
+                                    paddingBottom: '2px',
+                                    transition: 'all 0.5s',
+                                    '&:hover': {
+                                        borderBottom: '2px solid #A5C5E9',
+                                    },
+                                    cursor: 'pointer'
+                                }} variant='body1'>
+                                    <Link to={`/${text.toLowerCase()}`}
+                                          style={{textDecoration: 'none', color: 'inherit'}}>
+                                        {text}
+                                    </Link>
+                                </Typography>
+                            ))}
                         </Box>
                         <Box>
-                            <Typography sx={{fontWeight: 200}} variant={'h4'}>
+                            <Typography sx={{fontWeight: 200, textAlign: 'center'}} variant={'h4'}>
                                 CRAFTED FOR EVERY MOMENT
                             </Typography>
                         </Box>
                     </Box>
-                    <Box sx={{height: '60vh', width: '40vw', overflow: 'hidden', position: 'relative'}}>
-                        <Box sx={{textAlign: 'center'}}>
+                    <Box sx={{textAlign: 'center'}}>
+                        {/* You can add more content here if needed */}
+                    </Box>
+                    <Box sx={{
+                        height: {xs: '60vh', md: '60vh', lg: '70vh'},
+                        width: {xs: '80vw', md: '70vw', lg: '35vw'},
+                        overflow: 'hidden',
+                        position: 'relative',
+                        mt: {xs: '20px', md: '20px', lg: 0}
+                    }}>
+                        <Box sx={{
+                            textAlign: 'center',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden'
+                        }}>
                             <Typography
                                 variant="h1"
                                 onClick={scrollToTop}
                                 sx={{
                                     fontWeight: 100,
                                     color: '#FFFFFF',
-                                    fontSize: '6rem',
+                                    fontSize: {xs: '3rem', md: '3rem', lg: '3.8rem', xl: '5rem'},
                                     cursor: 'pointer',
                                     transition: 'all 1s',
                                     display: 'inline-block',
+                                    mb: '20px',
+                                    '&:hover': {
+                                        color: '#A5C5E9',
+                                    }
                                 }}>
                                 BACK TO TOP
                             </Typography>
@@ -143,7 +147,7 @@ export default function Footer() {
                     padding: '20px 0',
                     alignItems: 'center',
                 }}>
-                    <Typography variant='body1'>
+                    <Typography variant='body1' sx={{fontSize: {xs: '0.875rem', md: '0.875rem', lg: '1rem'}}}>
                         &copy; 2024 ORICÂND CAFE
                     </Typography>
                 </Box>

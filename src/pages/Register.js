@@ -55,108 +55,114 @@ export default function Register() {
 
     return (
         <>
-            <Logo/>
+            <Box sx={{padding: '30px 0 0 30px'}}>
+                <Logo/>
+            </Box>
             <ThemeProvider theme={formTheme}>
-                <Container component="main" maxWidth='lg' sx={{
-                    backgroundColor: '#FFFFFF',
-                    color: '#151515',
-                    borderRadius: '5px',
+                <Box sx={{
+                    paddingBottom: '50px',
                 }}>
-                    <Box sx={{
-                        marginTop: 8, display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        padding: '55px'
-                    }}
-                         component="form"
-                         onSubmit={handleSubmit}
-                    >
-                        <Typography variant='h6' sx={{fontWeight: 600}}>
-                            CREATE ACCOUNT
-                        </Typography>
-                        <TextField margin="normal"
-                                   fullWidth
-                                   required
-                                   id="firstName"
-                                   label="First name"
-                                   name="firstName"
-                                   autoComplete="name"
-                                   sx={{
-                                       color: '#151515',
-                                       backgroundColor: '#F5F4F2',
-                                       borderRadius: '10px',
-                                   }}
-                                   onChange={handleChange}
-                        />
-                        <TextField margin="normal"
-                                   fullWidth
-                                   required
-                                   id="lastName"
-                                   label="Last name"
-                                   name="lastName"
-                                   autoComplete="family-name"
-                                   sx={{
-                                       color: '#151515',
-                                       backgroundColor: '#F5F4F2',
-                                       borderRadius: '10px',
-                                   }}
-                                   onChange={handleChange}
-                        />
-                        <TextField margin="normal"
-                                   fullWidth
-                                   required
-                                   id="email"
-                                   label="Email"
-                                   name="email"
-                                   autoComplete="email"
-                                   sx={{
-                                       color: '#151515',
-                                       backgroundColor: '#F5F4F2',
-                                       borderRadius: '10px',
-                                   }}
-                                   onChange={handleChange}
-                        />
-                        <TextField
-                            type="password"
-                            margin="normal"
-                            fullWidth
-                            required
-                            id="password"
-                            label="Password"
-                            name="password"
-                            autoComplete="current-password"
-                            sx={{
-                                color: '#151515',
-                                backgroundColor: '#F5F4F2',
-                                borderRadius: '10px',
-                            }}
-                            onChange={handleChange}
-                        />
-                        {error && <Typography color="error">{error}</Typography>}
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{
-                                mt: 3,
-                                mb: 2,
-                                fontWeight: 600,
-                                fontSize: 22,
-                                backgroundColor: '#151515',
-                                color: '#FFFFFF',
-                                boxShadow: 'none',
-                                '&:hover': {
-                                    backgroundColor: '#FFFFFF',
-                                    color: '#151515',
-                                    boxShadow: 'none',
-                                },
-                            }}
-                            disabled={loading}
+                    <Container component="main" maxWidth='lg' sx={{
+                        backgroundColor: '#FFFFFF',
+                        color: '#151515',
+                        borderRadius: '5px',
+                    }}>
+                        <Box sx={{
+                            marginTop: 8, display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            padding: '55px'
+                        }}
+                             component="form"
+                             onSubmit={handleSubmit}
                         >
-                            {loading ? 'CREATING...' : 'CREATE'}
-                        </Button>
-                    </Box>
-                </Container>
+                            <Typography variant='h6' sx={{fontWeight: 600}}>
+                                CREATE ACCOUNT
+                            </Typography>
+                            <TextField margin="normal"
+                                       fullWidth
+                                       required
+                                       id="firstName"
+                                       label="First name"
+                                       name="firstName"
+                                       autoComplete="name"
+                                       sx={{
+                                           color: '#151515',
+                                           backgroundColor: '#F5F4F2',
+                                           borderRadius: '10px',
+                                       }}
+                                       onChange={handleChange}
+                            />
+                            <TextField margin="normal"
+                                       fullWidth
+                                       required
+                                       id="lastName"
+                                       label="Last name"
+                                       name="lastName"
+                                       autoComplete="family-name"
+                                       sx={{
+                                           color: '#151515',
+                                           backgroundColor: '#F5F4F2',
+                                           borderRadius: '10px',
+                                       }}
+                                       onChange={handleChange}
+                            />
+                            <TextField margin="normal"
+                                       fullWidth
+                                       required
+                                       id="email"
+                                       label="Email"
+                                       name="email"
+                                       autoComplete="email"
+                                       sx={{
+                                           color: '#151515',
+                                           backgroundColor: '#F5F4F2',
+                                           borderRadius: '10px',
+                                       }}
+                                       onChange={handleChange}
+                            />
+                            <TextField
+                                type="password"
+                                margin="normal"
+                                fullWidth
+                                required
+                                id="password"
+                                label="Password"
+                                name="password"
+                                autoComplete="current-password"
+                                sx={{
+                                    color: '#151515',
+                                    backgroundColor: '#F5F4F2',
+                                    borderRadius: '10px',
+                                }}
+                                onChange={handleChange}
+                            />
+                            {error && <Typography color="error">{error}</Typography>}
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    fontWeight: 600,
+                                    fontSize: 22,
+                                    backgroundColor: '#151515',
+                                    color: '#FFFFFF',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        backgroundColor: '#FFFFFF',
+                                        color: '#151515',
+                                        boxShadow: 'none',
+                                    },
+                                }}
+                                disabled={loading}
+                            >
+                                {loading ? 'CREATING...' : 'CREATE'}
+                            </Button>
+                        </Box>
+                    </Container>
+                </Box>
             </ThemeProvider>
         </>
     );

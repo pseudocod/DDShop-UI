@@ -12,6 +12,7 @@ export default function ProductBox() {
     const [error, setError] = useState(null);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMedium = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,7 +46,7 @@ export default function ProductBox() {
                     padding: '16px',
                     color: '#F5F4F2',
                 }}>
-                    <Typography sx={{fontSize: '7rem', fontWeight: 700}}>
+                    <Typography sx={{fontSize: isMedium ? '4rem' : '7rem', fontWeight: 700}}>
                         NEW ARRIVALS
                     </Typography>
                 </Box>
@@ -74,7 +75,7 @@ export default function ProductBox() {
                     }}>
                         <Link key={product.id} to={`/products/${product.id}`} sx={{width: '100%'}}>
                             <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                                <Typography variant='h4'
+                                <Typography variant={isMobile ? 'h5' : 'h4'}
                                             sx={{fontWeight: 300}}>{product.name.toUpperCase()}</Typography>
                                 <Typography variant='h6'>&#8364;{product.price.toFixed(2)}</Typography>
                             </Box>

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
-import {ListItemButton} from "@mui/material";
+import {ListItemButton, useMediaQuery} from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import * as React from "react";
@@ -18,6 +18,7 @@ export default function CartDrawer({theme}) {
     const {cart, loading} = useContext(CartContext);
     const {open, closeCartDrawer} = useCartDrawer();
     const [cartStockError, setCartStockError] = useState(null);
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     if (loading) {
         return (
@@ -39,12 +40,12 @@ export default function CartDrawer({theme}) {
                     onClose={closeCartDrawer}
                     sx={{
                         '& .MuiDrawer-paper': {
-                            width: '550px',
+                            width: isMobile ? '100%' : '550px',
                             boxSizing: 'border-box',
                             display: 'flex',
                             flexDirection: 'column',
                             position: 'fixed',
-                            zIndex: theme.zIndex.drawer + 1, // Ensure it overlays content
+                            zIndex: theme.zIndex.drawer + 1,
                         },
                         '& .MuiBackdrop-root': {
                             backgroundColor: 'rgba(0, 0, 0, 0.03)',

@@ -7,6 +7,8 @@ import {useTheme} from "@mui/material/styles";
 export default function AestheticSection() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMedium = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
     return (
         <>
             <Box sx={{mt: '100px', mb: '100px', position: 'relative'}}>
@@ -25,7 +27,7 @@ export default function AestheticSection() {
                 <Typography variant='h1'
                             sx={{
                                 fontWeight: 300,
-                                fontSize: isMobile ? '50px' : '100px',
+                                fontSize: (isMobile || isMedium) ? '50px' : '100px',
                                 color: '#ffffff',
                                 lineHeight: 0.9,
                                 top: '50%',

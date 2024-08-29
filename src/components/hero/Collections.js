@@ -62,45 +62,51 @@ export default function Collection() {
 
     const currentProduct = collectionProducts[currentIndex];
     const originAttribute = currentProduct?.attributes.find(attr => attr.attributeName === 'Origin')?.attributeValue.toUpperCase();
-
+    // sx={{paddingRight: {xs: '120px', md: '0'}}}
     return (
-        <Box sx={{margin: '100px 0', padding: '0 52px'}}>
+        <Box sx={{
+            margin: {xs: '50px 0', md: '100px 0'},
+            padding: {xs: '0 20px', md: '0 52px'},
+        }}>
             <Grid container spacing={2} alignItems="center">
-                <Grid item xs={8}>
+                <Grid item xs={8} sm={7} md={6} lg={7} xl={8}>
                     <Typography variant='h4'>Collections</Typography>
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item xs={4} sm={2} md={2} lg={2} xl={2} sx={{textAlign: 'center'}}>
                     <Link to={'/collections/all'} style={{textDecoration: 'underline'}}>View All</Link>
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={1} style={{display: 'flex', justifyContent: 'flex-end', gap: '15px'}}>
-                    <Button onClick={handlePrev} style={{
-                        color: '#151515',
-                        border: '1px solid #151515',
-                        borderRadius: '50%',
-                        padding: '12px',
-                        fontWeight: 700
-                    }}>
-                        <ArrowBackRoundedIcon fontSize={'large'}/>
-                    </Button>
-                    <Button onClick={handleNext} style={{
-                        color: '#151515',
-                        border: '1px solid #151515',
-                        borderRadius: '50%',
-                        padding: '12px',
-                        fontWeight: 700
-                    }}>
-                        <ArrowForwardIcon fontSize='large'/>
-                    </Button>
+                <Grid item xs={12} sm={3} md={4} lg={2} xl={2}
+                      sx={{textAlign: {xs: 'center', sm: 'right'}, mt: {xs: 2, sm: 0}}}>
+                    <Box sx={{display: 'flex', justifyContent: {xs: 'center', sm: 'flex-start'}, gap: '15px'}}>
+                        <Button onClick={handlePrev} sx={{
+                            color: '#151515',
+                            border: '1px solid #151515',
+                            borderRadius: '50%',
+                            padding: '12px',
+                            fontWeight: 700
+                        }}>
+                            <ArrowBackRoundedIcon fontSize={'large'}/>
+                        </Button>
+                        <Button onClick={handleNext} sx={{
+                            color: '#151515',
+                            border: '1px solid #151515',
+                            borderRadius: '50%',
+                            padding: '12px',
+                            fontWeight: 700
+                        }}>
+                            <ArrowForwardIcon fontSize='large'/>
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
 
             {currentProduct && (
                 <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(12, 1fr)',
+                    gridTemplateColumns: {xs: '1fr', md: 'repeat(12, 1fr)'},
                     paddingTop: '50px',
-                    columnGap: '30px',
+                    columnGap: {xs: '0px', md: '30px'},
+                    rowGap: {xs: '20px', md: '0px'},
                     marginBottom: '50px',
                     opacity: inTransition ? 0 : 1,
                     transform: inTransition
@@ -113,8 +119,8 @@ export default function Collection() {
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        minHeight: '150vh',
-                        gridColumn: 'span 7',
+                        minHeight: {xs: '50vh', md: '150vh'},
+                        gridColumn: {xs: 'span 1', md: 'span 7'},
                         position: 'relative',
                     }}>
                         <Box sx={{
@@ -123,14 +129,20 @@ export default function Collection() {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
+                            textAlign: 'center',
+                            px: 2,
                         }}>
-                            <Typography sx={{fontWeight: 100, fontSize: '130px'}}>
+                            <Typography sx={{fontWeight: 100, fontSize: {xs: '60px', md: '80px', lg: '120px'}}}>
                                 {originAttribute}
                             </Typography>
                         </Box>
                     </Box>
 
-                    <Box sx={{gridColumn: 'span 4', height: '50%'}}>
+                    <Box sx={{
+                        gridColumn: {xs: 'span 1', md: 'span 4'},
+                        height: 'auto',
+                        padding: {xs: '0 20px', md: '0'}
+                    }}>
                         <Box sx={{display: 'flex', flexDirection: 'column'}}>
                             <Box sx={{backgroundColor: '#efecec', borderRadius: '5px', mb: '20px'}}>
                                 <img
@@ -144,7 +156,8 @@ export default function Collection() {
                             </Box>
                         </Box>
                         <Box>
-                            <Typography sx={{mb: '30px'}} variant='h2'>{originAttribute}</Typography>
+                            <Typography sx={{mb: '30px', fontSize: {xs: '2rem', md: '2.5rem'}}}
+                                        variant='h2'>{currentProduct.name.toUpperCase()}</Typography>
                             <Typography variant='body1'>{currentProduct.description}</Typography>
                             <Link to={`products/${currentProduct.id}`}>
                                 <Button
@@ -155,7 +168,7 @@ export default function Collection() {
                                         mt: 5,
                                         mb: 2,
                                         fontWeight: 600,
-                                        fontSize: 22,
+                                        fontSize: {xs: '1rem', md: '1.375rem'},
                                         backgroundColor: '#151515',
                                         color: '#FFFFFF',
                                         boxShadow: 'none',

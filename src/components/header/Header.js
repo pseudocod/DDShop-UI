@@ -27,6 +27,7 @@ export default function Header() {
     const {user} = useContext(UserContext);
     const [openCart, setOpenCart] = useState(false);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMedium = useMediaQuery(theme.breakpoints.between('sm', 'md'));
     const location = useLocation();
     const {toggleCartDrawer, closeCartDrawer} = useCartDrawer();
     const {cart, loading: loadingCart, error: errorCart} = useContext(CartContext);
@@ -48,28 +49,30 @@ export default function Header() {
     if (!user) {
         cartQuantity = 0;
     }
+    const mobileHeight = isMobile ? '60px' : (isMedium ? 'auto' : '100vh');
     return (
         <Box>
             <AppBar
                 position="fixed"
                 sx={{
-                    width: isMobile ? '100%' : '90px',
+                    width: (isMobile || isMedium) ? '100%' : '90px',
                     backgroundColor: '#FFFFFF',
                     color: '#151515',
                     boxShadow: 'none',
-                    height: isMobile ? '60px' : '100vh',
                     zIndex: theme.zIndex.drawer + 1,
+                    transition: 'all 0.3s',
+                    height: mobileHeight,  // Set the height here conditionally
                 }}
             >
                 <Toolbar sx={{
                     display: 'flex',
-                    flexDirection: isMobile ? 'row' : 'column',
+                    flexDirection: (isMobile || isMedium) ? 'row' : 'column',
                     alignItems: 'center',
-                    justifyContent: isMobile ? 'space-between' : 'center',
-                    height: '100vh',
+                    justifyContent: (isMobile || isMedium) ? 'space-between' : 'center',
                     padding: '8px 0',
+                    height: '100%',
                 }}>
-                    {isMobile && (
+                    {(isMobile || isMedium) && (
                         <Box component={Link} to="/"
                              sx={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit'}}>
                             <Typography
@@ -85,13 +88,29 @@ export default function Header() {
                             </Typography>
                         </Box>
                     )}
-                    {!isMobile && (
+
+                    {isMedium && (
+                        <>
+                            <Typography variant="body2" component="div" sx={{mr: 2}}>
+                                Free Shipping
+                            </Typography>
+                            <Typography variant="body2" component="div" sx={{mr: 2}}>
+                                London orders 40£+ (by bike)
+                            </Typography>
+                            <Typography variant="body2" component="div" sx={{mr: 2}}>
+                                Wales orders 50£+ |
+                                Scotland orders 60£+
+                            </Typography>
+                        </>
+                    )}
+
+                    {!isMobile && !isMedium && (
                         <>
                             <IconButton
                                 size="large"
                                 color="inherit"
                                 aria-label="menu icon for opening drawer"
-                                sx={{mb: isMobile ? 0 : 2}}
+                                sx={{mb: (isMobile || isMedium) ? 0 : 2}}
                                 onClick={handleDrawerToggle}
                             >
                                 <MenuIcon/>
@@ -109,7 +128,7 @@ export default function Header() {
                             </Typography>
                         </>
                     )}
-                    <Box sx={{display: 'flex', flexDirection: isMobile ? 'row' : 'column'}}>
+                    <Box sx={{display: 'flex', flexDirection: (isMobile || isMedium) ? 'row' : 'column'}}>
                         <IconButton
                             size="large"
                             aria-label="shopping cart of user"
@@ -136,26 +155,24 @@ export default function Header() {
                                 >
                                     <Typography>{cartQuantity}</Typography>
                                 </Box>
-
-                            )
-                            }
+                            )}
                         </IconButton>
                         <Link to={user ? "/account" : "/login"}>
                             <IconButton
                                 size="large"
                                 aria-label="account of current user"
                                 color="inherit"
-                                sx={{mb: isMobile ? 0 : 2}}
+                                sx={{mb: (isMobile || isMedium) ? 0 : 2}}
                             >
                                 <AccountCircleOutlinedIcon/>
                             </IconButton>
                         </Link>
-                        {isMobile && (
+                        {(isMobile || isMedium) && (
                             <IconButton
                                 size="large"
                                 color="inherit"
                                 aria-label="menu icon for opening drawer"
-                                sx={{mb: isMobile ? 0 : 2}}
+                                sx={{mb: (isMobile || isMedium) ? 0 : 2}}
                                 onClick={handleDrawerToggle}
                             >
                                 <MenuIcon/>
@@ -172,12 +189,12 @@ export default function Header() {
                 onClose={handleClose}
                 sx={{
                     '& .MuiDrawer-paper': {
-                        width: isMobile ? '100%' : '550px', // Full width on mobile, fixed width on larger screens
+                        width: isMobile ? '100%' : '550px',
                         boxSizing: 'border-box',
                         display: 'flex',
                         flexDirection: 'column',
                         position: 'fixed',
-                        zIndex: theme.zIndex.drawer + 1, // Ensure it overlays content
+                        zIndex: theme.zIndex.drawer + 1,
                     },
                     '& .MuiBackdrop-root': {
                         backgroundColor: 'rgba(0, 0, 0, 0.03)',

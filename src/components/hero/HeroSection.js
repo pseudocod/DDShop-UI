@@ -10,10 +10,11 @@ import ProductBoxV2 from "../product/ProductBoxV2";
 const HeroSection = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMedium = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
     const headingStyle = {
         fontWeight: 700,
-        fontSize: isMobile ? '3rem' : '6rem', // Responsive font size
+        fontSize: isMobile ? '3rem' : '6rem',
         color: '#F5F4F2',
         lineHeight: 0.9,
         mb: 3,
@@ -23,7 +24,7 @@ const HeroSection = () => {
         <>
             <Box
                 sx={{
-                    paddingTop: isMobile ? '80px' : '30px',
+                    paddingTop: isMobile ? '80px' : (isMedium ? '100px' : '30px'),
                     paddingLeft: isMobile ? theme.spacing(2) : theme.spacing(6),
                     paddingRight: isMobile ? theme.spacing(0) : theme.spacing(12),
                     backgroundImage: `url('/resurseProiect/HomePage.webp')`,
@@ -52,7 +53,7 @@ const HeroSection = () => {
                     variant="h1"
                     sx={{
                         ...headingStyle,
-                        fontSize: isMobile ? '4rem' : '11.25rem',
+                        fontSize: isMobile ? '4rem' : (isMedium ? '6rem' : '11.25rem'),
                         letterSpacing: '0.04em',
                     }}
                 >
@@ -63,11 +64,11 @@ const HeroSection = () => {
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: isMobile ? 'center' : 'flex-end',
-                        flexDirection: isMobile ? 'column' : 'row',
-                        paddingRight: isMobile ? 0 : '100px',
-                        paddingTop: isMobile ? '40px' : '80px',
-                        marginBottom: isMobile ? '50px' : '80px',
+                        justifyContent: (isMobile || isMedium) ? 'center' : 'flex-end',
+                        flexDirection: (isMobile || isMedium) ? 'column' : 'row',
+                        paddingRight: (isMobile || isMedium) ? 0 : '100px',
+                        paddingTop: (isMobile || isMedium) ? '40px' : '80px',
+                        marginBottom: (isMobile || isMedium) ? '50px' : '80px',
                     }}
                 >
                     <Box
@@ -89,7 +90,7 @@ const HeroSection = () => {
                                 fontWeight: 500,
                                 lineHeight: 1.1,
                                 fontSize: isMobile ? '1.5rem' : '2.50rem',
-                                textAlign: 'left',
+                                textAlign: (isMobile || isMedium) ? 'center' : 'left',
                             }}
                         >
                             Surrender to the moment with
@@ -122,7 +123,6 @@ const HeroSection = () => {
                         </Link>
                     </Box>
                 </Box>
-
                 <ProductBox/>
             </Box>
         </>
