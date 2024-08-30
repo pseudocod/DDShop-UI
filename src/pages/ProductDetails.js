@@ -89,8 +89,11 @@ export default function ProductDetails() {
             return;
         }
         try {
-            await addToCart(product.id, quantity);
-            toggleCartDrawer();
+            const success = await addToCart(product.id, quantity);
+            if(success) {
+                toggleCartDrawer();
+            }
+
         } catch (error) {
             setError('Failed to add product to cart');
             console.error(error);
@@ -180,7 +183,7 @@ export default function ProductDetails() {
                                 variant="contained"
                                 sx={{
                                     mt: 10,
-                                    mb: 5,
+                                    mb: !user ? 0.2 : 5,
                                     fontWeight: 600,
                                     fontSize: 22,
                                     backgroundColor: '#151515',
@@ -197,7 +200,7 @@ export default function ProductDetails() {
                             >
                                 {loading ? <CircularProgress color="inherit"/> : 'ADD TO CART'}
                             </Button>
-                            {!user &&  <Link style={{display:'inline-block', marginBottom:'20px'}} to='/login'><Typography variant={'h4'}>Please log in or register to add to cart.</Typography></Link>}
+                            {!user &&  <Link style={{display:'inline-block', marginBottom:'20px'}} to='/login'><Typography sx ={{fontStyle:'italic'}} variant={'subtitle'}>Please log in or register to add to cart.</Typography></Link>}
 
                         </>)}
                     {stockError && <Alert sx={{mb: '30px', fontSize: '1.5rem'}} severity="error">{stockError}</Alert>}

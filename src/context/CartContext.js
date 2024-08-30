@@ -53,6 +53,7 @@ export default function CartProvider({children}) {
             setCart(updatedCart);
             setError(null);
             setStockError(null);
+            return true;
         } catch (error) {
             if (error.response.status === 409) {
                 setStockError('Not enough stock available for the selected quantity.');
@@ -61,6 +62,7 @@ export default function CartProvider({children}) {
                 setError('Failed to add product to cart');
             }
             console.error(error);
+            return false;
         } finally {
             setLoading(false);
         }

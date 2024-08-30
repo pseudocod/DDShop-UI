@@ -28,7 +28,7 @@ export const editFormTheme = createTheme({
                             borderColor: '#151515',
                         },
                         '&:hover fieldset': {
-                            borderColor: 'transparent',
+                            borderColor: '151515',
                         },
                         '&.Mui-focused fieldset': {
                             borderColor: '#151515',
@@ -162,7 +162,7 @@ export default function UserEdit() {
                 </Box>
 
 
-                <Box sx={{padding: "0 20px", paddingRight: '100px'}}>
+                <Box sx={{padding: "0 20px"}}>
                     <Box
                         sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <TextField margin="normal"

@@ -56,9 +56,24 @@ export default function Footer() {
                             justifyContent: 'center',
                             gap: {xs: '20px', md: '20px', lg: '50px'} // Adjust gap for lg
                         }}>
-                            {['Products', 'Account', 'About'].map((text) => (
+                            <Typography sx={{
+                                fontSize: {xs: '1.5rem', md: '1.5rem', lg: '2rem'},
+                                borderBottom: '2px solid white',
+                                paddingBottom: '2px',
+                                transition: 'all 0.5s',
+                                '&:hover': {
+                                    borderBottom: '2px solid #A5C5E9',
+                                },
+                                cursor: 'pointer'
+                            }} variant='body1'>
+                                <Link to={`/collections/all`}
+                                      style={{textDecoration: 'none', color: 'inherit'}}>
+                                    Products
+                                </Link>
+                            </Typography>
+                            {['Account', 'About'].map((text) => (
                                 <Typography key={text} sx={{
-                                    fontSize: {xs: '1.5rem', md: '1.5rem', lg: '2rem'}, // Size for xs and md is the same, lg is bigger
+                                    fontSize: {xs: '1.5rem', md: '1.5rem', lg: '2rem'},
                                     borderBottom: '2px solid white',
                                     paddingBottom: '2px',
                                     transition: 'all 0.5s',
