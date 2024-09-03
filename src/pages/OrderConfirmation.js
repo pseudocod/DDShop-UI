@@ -61,6 +61,7 @@ export default function OrderConfirmation() {
     const isUsingNonDefaultBillingAddress = billingAddress && (user.defaultBillingAddress !== billingAddress);
 
     const handleSubmit = async () => {
+        if (loading) return;
         try {
             setLoading(true);
             const response = await axios.post('http://localhost:8080/orders', {
@@ -174,6 +175,7 @@ export default function OrderConfirmation() {
                         <Button
                             type="submit"
                             variant="contained"
+                            disabled={loading}
                             sx={{
                                 mt: 3,
                                 mb: 2,

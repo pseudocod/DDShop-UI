@@ -14,6 +14,7 @@ export default function Account() {
     const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
     const [openPasswordForm, setOpenPasswordForm] = useState(false);
+    const [addressesVisible, setAddressesVisible] = useState(false);
 
 
     useEffect(() => {
@@ -76,6 +77,50 @@ export default function Account() {
     const handlePasswordFormClose = () => {
         setOpenPasswordForm(false);
     }
+
+    const usedAddresses = new Set();
+    orders.forEach(order => {
+        if (isAddressPresent(order.deliveryAddress)) {
+            usedAddresses.add(addressString(order.deliveryAddress));
+        }
+        if (isAddressPresent(order.invoiceAddress)) {
+            usedAddresses.add(addressString(order.invoiceAddress));
+        }
+    });
+    const handleSetDefaultAddress = async (address, type) => {
+        try {
+            setLoading(true);
+            const response = await axios.put(`http://localhost:8080/users/${user.id}/default-address`, {
+                addressType: type,
+                address: {
+                    streetLine: address.split(', ')[0],
+                    postalCode: address.split(', ')[1],
+                    city: address.split(', ')[2],
+                    county: address.split(', ')[3],
+                    country: address.split(', ')[4]
+                }
+            });
+            setUser(response.data);
+            setError(null);
+        } catch (error) {
+            setError('Could not update default address.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const compareAddresses = (address1, address2) => {
+        return (
+            address1?.city === address2?.city &&
+            address1?.country === address2?.country &&
+            address1?.county === address2?.county &&
+            address1?.postalCode === address2?.postalCode &&
+            address1?.streetLine === address2?.streetLine
+        );
+    };
+    const toggleAddressesVisibility = () => {
+        setAddressesVisible(!addressesVisible);
+    };
     return (
         <>
             <Box sx={{
