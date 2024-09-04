@@ -103,7 +103,7 @@ const HeroSection = () => {
                         </Typography>
                         <Link to="/collections/all">
                             <Button
-                                fullwidth
+                                fullWidth
                                 variant="contained"
                                 sx={{
                                     fontWeight: 500,
