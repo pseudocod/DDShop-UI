@@ -12,7 +12,7 @@ import {
 import Typography from "@mui/material/Typography";
 import {Link, useNavigate} from "react-router-dom";
 import {theme} from "../theme/theme";
-import AddressForm from "../../src/components/Address/AddressForm";
+import AddressForm from "../components/address/AddressForm";
 import axios from "axios";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import Logo from "../components/logo/Logo";

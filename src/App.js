@@ -19,6 +19,7 @@ import OrderSuccess from "./pages/OrderSuccess";
 import OrderDetails from "./pages/OrderDetails";
 import {CartDrawerProvider} from "./context/CartDrawerContext";
 import UserChangePassword from "./pages/UserChangePassword";
+import UserForgotPassword from "./pages/UserForgotPassword";
 
 
 const createRouter = (user) => {
@@ -40,7 +41,8 @@ const createRouter = (user) => {
                 {path: '/order-confirmation', element: <OrderConfirmation/>},
                 {path: '/order-success', element: <OrderSuccess/>},
                 {path: '/order/:orderId', element: <OrderDetails/>},
-                {path: '/change-password', element: <UserChangePassword/>}
+                {path: '/change-password', element: <UserChangePassword/>},
+                {path: '/forgot-password', element: <UserForgotPassword/>},
             ],
         },
     ]);

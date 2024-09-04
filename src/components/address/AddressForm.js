@@ -65,7 +65,7 @@ export default function AddressForm({open, handleModalClose, handleAddressSave, 
                 }}>
                 <Typography variant='h1'
                             sx={{fontWeight: 500, color: '#151515', fontSize: '16px', textAlign: 'center'}}>
-                    {formType === 'billing' ? 'Edit Billing Address' : 'Edit Delivery Address'}
+                    {formType === 'billing' ? 'Edit Billing address' : 'Edit Delivery address'}
                 </Typography>
                 <TextField margin="normal"
                            required

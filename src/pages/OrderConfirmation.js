@@ -2,10 +2,10 @@ import React, {useContext, useState} from 'react';
 import Typography from "@mui/material/Typography";
 import {Box, Button, CircularProgress} from "@mui/material";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import CartEntryBoxCheckout from "../components/header/CartEntryBoxCheckout";
+import CartEntryBoxCheckout from "../components/cart/CartEntryBoxCheckout";
 import axios from "axios";
 import {CartContext} from "../context/CartContext";
-import CartEntryBoxOrderDetails from "../components/header/CartEntryBoxOrderDetails";
+import CartEntryBoxOrderDetails from "../components/cart/CartEntryBoxOrderDetails";
 
 export default function OrderConfirmation() {
     const location = useLocation();

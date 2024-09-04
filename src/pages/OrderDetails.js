@@ -2,7 +2,7 @@ import {Link, useLocation} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import {Box, Button, CircularProgress} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import CartEntryBoxOrderDetails from "../components/header/CartEntryBoxOrderDetails";
+import CartEntryBoxOrderDetails from "../components/cart/CartEntryBoxOrderDetails";
 import {UserContext} from "../context/UserContext";
 import axios from "axios";
 

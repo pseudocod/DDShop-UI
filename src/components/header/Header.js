@@ -16,7 +16,7 @@ import {CircularProgress, ListItemButton} from '@mui/material';
 import {Link, useLocation} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../context/UserContext";
-import CartDrawer from "./CartDrawer";
+import CartDrawer from "../cart/CartDrawer";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useCartDrawer} from "../../context/CartDrawerContext";
 import {CartContext} from "../../context/CartContext";

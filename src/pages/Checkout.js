@@ -12,11 +12,11 @@ import {
 import Typography from "@mui/material/Typography";
 import {Link, useNavigate} from "react-router-dom";
 import {theme} from "../theme/theme";
-import AddressForm from "../../src/components/Address/AddressForm";
+import AddressForm from "../components/address/AddressForm";
 import axios from "axios";
-import CartEntryBox from "../components/header/CartEntryBox";
+import CartEntryBox from "../components/cart/CartEntryBox";
 import {CartContext} from "../context/CartContext";
-import CartEntryBoxCheckout from "../components/header/CartEntryBoxCheckout";
+import CartEntryBoxCheckout from "../components/cart/CartEntryBoxCheckout";
 import {PaymentType} from "../components/paymentType/PaymentType";
 
 export const editFormTheme = createTheme({

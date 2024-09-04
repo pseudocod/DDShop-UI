@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import {UserContext} from "../context/UserContext";
 import {Link, useNavigate} from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import PasswordForm from "../components/Address/PasswordForm";
+import PasswordForm from "../components/password/PasswordForm";
 import axios from "axios";
 
 export default function Account() {

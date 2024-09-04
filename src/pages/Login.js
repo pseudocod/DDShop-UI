@@ -8,6 +8,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {UserContext} from "../context/UserContext";
 import {formTheme} from "../theme/formTheme";
+import PasswordForgotForm from "../components/password/PasswordForgotForm";
 
 
 export default function Login() {
@@ -18,7 +19,7 @@ export default function Login() {
         email: '',
         password: ''
     });
-
+    const [openPasswordForgot, setOpenPasswordForgot] = useState(false);
     const {setUser} = useContext(UserContext);
 
     const handleSubmit = async (event) => {
@@ -61,7 +62,12 @@ export default function Login() {
             }
         );
     }
-
+    const handleClose = () => {
+        setOpenPasswordForgot(false);
+    }
+    const handleOpen = () => {
+        setOpenPasswordForgot(true);
+    }
     return (
         <>
             <Box sx={{padding: '30px 0 0 30px'}}>
@@ -117,6 +123,7 @@ export default function Login() {
                                        onChange={handleChange}
                             />
                             <Typography variant='p'
+                                        onClick={handleOpen}
                                         sx={{
                                             fontWeight: 600,
                                             alignSelf: 'flex-start',
@@ -126,6 +133,7 @@ export default function Login() {
                                         }}>
                                 Forgot your password?
                             </Typography>
+                            <PasswordForgotForm open={openPasswordForgot} handleClose={handleClose}/>
                             {error && <Typography>{error}</Typography>}
                             <Button
                                 type="submit"
